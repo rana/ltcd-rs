@@ -267,9 +267,7 @@ pub fn min_window_b_mcr_idx_usize(s: String, t: String) -> String {
     }
 
     // Return the minimum window string; or, an empty string.
-    min.map_or("".into(), |min| {
-        s[min.lft..min.rht].into()
-    })
+    min.map_or("".into(), |min| s[min.lft..min.rht].into())
 }
 
 pub fn min_window_b_arr(s: String, t: String) -> String {
@@ -477,40 +475,6 @@ mod tests {
     use std::fmt;
     use Lbl::*;
 
-    #[derive(Clone)]
-    struct Tst {
-        s: String,
-        t: String,
-        ret: String,
-    }
-
-    fn tsts() -> Vec<Tst> {
-        vec![
-            Tst {
-                s: "ADOBECODEBANC".into(),
-                t: "ABC".into(),
-                ret: "BANC".into(),
-            },
-            Tst {
-                s: "a".into(),
-                t: "a".into(),
-                ret: "a".into(),
-            },
-            Tst {
-                s: "a".into(),
-                t: "aa".into(),
-                ret: "".into(),
-            },
-        ]
-    }
-
-    #[test]
-    fn tst_min_window_a() {
-        for tst in tsts() {
-            assert_eq!(min_window_a(tst.s, tst.t), tst.ret);
-        }
-    }
-
     #[test]
     fn tst_min_window_b() {
         for tst in tsts() {
@@ -537,6 +501,40 @@ mod tests {
         for tst in tsts() {
             assert_eq!(min_window_b_arr(tst.s, tst.t), tst.ret);
         }
+    }
+
+    #[test]
+    fn tst_min_window_a() {
+        for tst in tsts() {
+            assert_eq!(min_window_a(tst.s, tst.t), tst.ret);
+        }
+    }
+
+    fn tsts() -> Vec<Tst> {
+        vec![
+            Tst {
+                s: "ADOBECODEBANC".into(),
+                t: "ABC".into(),
+                ret: "BANC".into(),
+            },
+            Tst {
+                s: "a".into(),
+                t: "a".into(),
+                ret: "a".into(),
+            },
+            Tst {
+                s: "a".into(),
+                t: "aa".into(),
+                ret: "".into(),
+            },
+        ]
+    }
+
+    #[derive(Clone, Debug)]
+    struct Tst {
+        s: String,
+        t: String,
+        ret: String,
     }
 
     #[test]
