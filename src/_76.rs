@@ -1,5 +1,3 @@
-use ben::Sta::*;
-use ben::*;
 use std::collections::HashMap;
 
 /// 76. Minimum Window Substring
@@ -227,7 +225,7 @@ pub fn min_window_b_mcr_idx_usize(s: String, t: String) -> String {
 
         // Check whether we can approach a valid window.
         // Check whether we have a valid frequency count of a valid character.
-        if cnts![byts[cur.rht as usize]] > 0 {
+        if cnts![byts[cur.rht]] > 0 {
             // Decrement the target window length.
             // Target window length of zero means we have a success condition.
             tgt_wnd_len -= 1;
@@ -236,7 +234,7 @@ pub fn min_window_b_mcr_idx_usize(s: String, t: String) -> String {
         // Decrement the frequency count of the character at the right index.
         // Valid characters will approach zero.
         // Invalid characters will approach i32::MIN.
-        cnts![byts[cur.rht as usize]] -= 1;
+        cnts![byts[cur.rht]] -= 1;
 
         // Advance the right index of the window.
         cur.rht += 1;
@@ -254,10 +252,10 @@ pub fn min_window_b_mcr_idx_usize(s: String, t: String) -> String {
             // Increment the count of the left character.
             // Valid characters will have a character count above zero.
             // Invalid characters will approach zero.
-            cnts![byts[cur.lft as usize]] += 1;
+            cnts![byts[cur.lft]] += 1;
 
             // Check whether we can increase the target window length.
-            if cnts![byts[cur.lft as usize]] > 0 {
+            if cnts![byts[cur.lft]] > 0 {
                 // Increment the target window length.
                 // Moves away from a valid window.
                 tgt_wnd_len += 1;
@@ -270,7 +268,7 @@ pub fn min_window_b_mcr_idx_usize(s: String, t: String) -> String {
 
     // Return the minimum window string; or, an empty string.
     min.map_or("".into(), |min| {
-        s[min.lft as usize..min.rht as usize].into()
+        s[min.lft..min.rht].into()
     })
 }
 
@@ -475,6 +473,7 @@ pub fn min_window_a(s: String, t: String) -> String {
 mod tests {
     use super::*;
     use anyhow::{bail, Result};
+    use ben::*;
     use std::fmt;
     use Lbl::*;
 
@@ -509,6 +508,13 @@ mod tests {
     fn tst_min_window_a() {
         for tst in tsts() {
             assert_eq!(min_window_a(tst.s, tst.t), tst.ret);
+        }
+    }
+
+    #[test]
+    fn tst_min_window_b() {
+        for tst in tsts() {
+            assert_eq!(min_window_b(tst.s, tst.t), tst.ret);
         }
     }
 
