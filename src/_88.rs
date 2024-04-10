@@ -161,24 +161,13 @@ mod tests {
                 t.nums1
             });
         });
-        stdy.reg_bld(&[C], |x| {
-            x.ins_prm(Len(1), |tme| {
-                let mut t = tsts()[0].clone();
-                tme.borrow_mut().start();
-                merge_c(&mut t.nums1, t.m, &mut t.nums2, t.n);
-                tme.borrow_mut().stop();
-                t.nums1
-            });
-        });
 
         // Define function queries.
         let mut qry = QryBld::new();
         let a_id = qry.sel(&[A]);
         let b_id = qry.sel(&[B]);
-        let c_id = qry.sel(&[C]);
 
         qry.cmp(a_id, b_id);
-        qry.cmp(c_id, b_id);
 
         // Run metric functions.
         stdy.run(qry, itr).expect("err");
@@ -190,7 +179,6 @@ mod tests {
     pub enum Lbl {
         A,
         B,
-        C,
         Len(u32),
     }
     impl fmt::Display for Lbl {
@@ -198,7 +186,6 @@ mod tests {
             match *self {
                 A => write!(f, "a"),
                 B => write!(f, "b"),
-                C => write!(f, "c"),
                 Len(x) => {
                     if f.alternate() {
                         write!(f, "len")
