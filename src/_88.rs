@@ -21,6 +21,87 @@
 /// * 0 <= m, n <= 200
 /// * 1 <= m + n <= 200
 /// * -10^9 <= nums1[i], nums2[j] <= 10^9
+pub fn merge_d(nums1: &mut [i32], m: i32, nums2: &mut [i32], n: i32) {
+    // Cast m and n to usize for use in indexes.
+    let (m, n) = (m as usize, n as usize);
+
+    // Use iterators to handle index boundry conditions.
+
+    // Create read iterators of indexes for nums1 and nums2.
+    // Iterate from back to front. Vectors are given in ascending order.
+    let mut itr1 = (0..m).rev(); // A time complexity O(m) portion.
+    let mut itr2 = (0..n).rev(); // A time complexity O(n) portion.
+
+    // Initialize first indexes.
+    let mut opt1 = itr1.next();
+    let mut opt2 = itr2.next();
+
+    // Create a merge iterator of indexes for nums1.
+    // Insert from back to front.
+    let itr_mrg = (0..m + n).rev(); // A time complexity O(m + n) portion.
+
+    // Loop until merge iterator is complete.
+    for idx_mrg in itr_mrg {
+        match (opt1, opt2) {
+            // Merge the larger element from nums1 or nums2.
+            (Some(idx1), Some(idx2)) => {
+                nums1[idx_mrg] = if nums1[idx1] > nums2[idx2] {
+                    opt1 = itr1.next();
+                    nums1[idx1]
+                } else {
+                    opt2 = itr2.next();
+                    nums2[idx2]
+                };
+            }
+            // If nums2 has remaining elements, copy them to nums1.
+            (None, Some(idx2)) => {
+                nums1[idx_mrg] = nums2[idx2];
+                opt2 = itr2.next();
+            }
+            _ => {}
+        }
+    }
+}
+
+pub fn merge_c(nums1: &mut [i32], m: i32, nums2: &mut [i32], n: i32) {
+    // Cast m and n to uszie for use in indexes.
+    let (m, n) = (m as usize, n as usize);
+
+    // Create index iterators for nums1 and nums2.
+    // Use iterators to address boundry conditions.
+    // Iterate from back to front. Vectors are in ascending order.
+    let mut itr1 = (0..m).rev(); // A time complexity O(m) portion.
+    let mut itr2 = (0..n).rev(); // The time complexity O(n) portion.
+
+    // Create a merge index.
+    // Insert from back to front of entire nums1.
+    let mut idx_mrg: usize = m + n - 1;
+
+    // Initialize first read indexes.
+    let mut opt1 = itr1.next();
+    let mut opt2 = itr2.next();
+
+    // Loop until one or both iterators are complete.
+    while let (Some(idx1), Some(idx2)) = (opt1, opt2) {
+        nums1[idx_mrg] = if nums1[idx1] > nums2[idx2] {
+            opt1 = itr1.next();
+            nums1[idx1]
+        } else {
+            opt2 = itr2.next();
+            nums2[idx2]
+        };
+
+        idx_mrg = idx_mrg.wrapping_sub(1);
+    }
+
+    // If nums2 has remaining elements, copy them to nums1.
+    while let Some(idx2) = opt2 {
+        nums1[idx_mrg] = nums2[idx2];
+        opt2 = itr2.next();
+        idx_mrg = idx_mrg.wrapping_sub(1);
+    }
+}
+
 fn merge_b(nums1: &mut [i32], m: i32, nums2: &mut [i32], n: i32) {
     // Merge arrays.
     // Arrays are sorted in ascending order.
@@ -82,6 +163,24 @@ mod tests {
     use ben::*;
     use std::fmt;
     use Lbl::*;
+
+    #[test]
+    fn tst_merge_d() {
+        for (idx, t) in tsts().iter_mut().enumerate() {
+            merge_d(&mut t.nums1, t.m, &mut t.nums2, t.n);
+            assert!(t.nums1.is_sorted(), "idx:{} {:?}", idx, t);
+            assert_eq!(t.nums1, t.ret, "idx:{} {:?}", idx, t)
+        }
+    }
+
+    #[test]
+    fn tst_merge_c() {
+        for (idx, t) in tsts().iter_mut().enumerate() {
+            merge_c(&mut t.nums1, t.m, &mut t.nums2, t.n);
+            assert!(t.nums1.is_sorted(), "idx:{} {:?}", idx, t);
+            assert_eq!(t.nums1, t.ret, "idx:{} {:?}", idx, t)
+        }
+    }
 
     #[test]
     fn tst_merge_b() {
@@ -161,13 +260,24 @@ mod tests {
                 t.nums1
             });
         });
+        stdy.reg_bld(&[D], |x| {
+            x.ins_prm(Len(1), |tme| {
+                let mut t = tsts()[0].clone();
+                tme.borrow_mut().start();
+                merge_d(&mut t.nums1, t.m, &mut t.nums2, t.n);
+                tme.borrow_mut().stop();
+                t.nums1
+            });
+        });
 
         // Define function queries.
         let mut qry = QryBld::new();
         let a_id = qry.sel(&[A]);
         let b_id = qry.sel(&[B]);
+        let d_id = qry.sel(&[D]);
 
         qry.cmp(a_id, b_id);
+        qry.cmp(d_id, b_id);
 
         // Run metric functions.
         stdy.run(qry, itr).expect("err");
@@ -179,6 +289,7 @@ mod tests {
     pub enum Lbl {
         A,
         B,
+        D,
         Len(u32),
     }
     impl fmt::Display for Lbl {
@@ -186,6 +297,7 @@ mod tests {
             match *self {
                 A => write!(f, "a"),
                 B => write!(f, "b"),
+                D => write!(f, "d"),
                 Len(x) => {
                     if f.alternate() {
                         write!(f, "len")
