@@ -25,15 +25,17 @@ fn remove_element_c(nums: &mut [i32], val: i32) -> i32 {
     // Removes `val` from front of nums.
 
     // Initialize two pointer variables.
+    // Variables contribute to O(1) space complexity.
     let mut lft: usize = 0;
     let mut rht: usize = 0;
     let len = nums.len();
 
     // Loop until the right pointer is complete.
+    // Loop contributes to O(n) time complexity.
     while rht < len {
         // Check whether the current left value is equal to `val`.
 
-        // Search for a right value we can move to the left.
+        // Search for a right value that can move left.
         if nums[rht] != val {
             // Overwrite left value with right value.
             nums[lft] = nums[rht];
@@ -88,10 +90,6 @@ fn remove_element_a(nums: &mut [i32], val: i32) -> i32 {
 #[cfg(test)]
 mod tests {
     use super::*;
-    // use anyhow::{bail, Result};
-    // use ben::*;
-    // use std::fmt;
-    // use Lbl::*;
 
     #[test]
     fn tst_remove_element_c() {
