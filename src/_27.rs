@@ -21,31 +21,29 @@
 /// * 0 <= val <= 100
 
 fn remove_element_c(nums: &mut [i32], val: i32) -> i32 {
-    // Slide all non-val elements to the left.
-    // Removes `val` from front of nums.
+    // Move valid elements to the left.
+    // Remove invalid elements from the front of nums.
+    // A valid element is not equal to `val`.
 
-    // Initialize two pointer variables.
-    // Variables contribute to O(1) space complexity.
+    // Initialize left pointer variable.
+    // Variable contributes to O(1) space complexity.
     let mut lft: usize = 0;
-    let mut rht: usize = 0;
-    let len = nums.len();
 
     // Loop until the right pointer is complete.
     // Loop contributes to O(n) time complexity.
-    while rht < len {
-        // Check whether the current left value is equal to `val`.
-
-        // Search for a right value that can move left.
-        if nums[rht] != val {
-            // Overwrite left value with right value.
+    for rht in 0..nums.len() {
+        // Search for a right element that can move left.
+        if val != nums[rht] {
+            // Overwrite left element with right element.
+            // Either:
+            // * Write valid `rht` element to same index which happens to be `lft`.
+            // * Write valid `rht` element to next available `lft` index.
             nums[lft] = nums[rht];
             lft += 1;
         }
-
-        rht += 1;
     }
 
-    // Left is now the length array without `val`.
+    // Left pointer is now the array length without `val`.
     lft as i32
 }
 

@@ -19,6 +19,34 @@
 /// * -100 <= nums[i] <= 100
 /// * nums is sorted in non-decreasing order.
 
+fn remove_duplicates_c(nums: &mut [i32]) -> i32 {
+    // Move unique elements to the left.
+    // Remove duplicate elements from the front of nums.
+    // The array is sorted.
+
+    // Initialize left pointer variable.
+    // Variable contributes to O(1) space complexity.
+    // `lft` points to a unique element.
+    // `lft + 1` may be unique or duplicate.
+    let mut lft: usize = 0;
+
+    // Loop until the right pointer is complete.
+    // Loop contributes to O(n) time complexity.
+    for rht in 1..nums.len() {
+        // Search for right unique element that can move left.
+        if nums[lft] != nums[rht] {
+            // Overwrite left element with right element.
+            // Either:
+            // * Write unique right element to same index.
+            // * Write unique right element to left duplicate element.
+            lft += 1;
+            nums[lft] = nums[rht];
+        }
+    }
+
+    lft as i32 + 1
+}
+
 fn remove_duplicates_b(nums: &mut [i32]) -> i32 {
     // Slide unique elements to the left.
     // Removes duplicate elements from a sorted array in-place.
@@ -66,10 +94,20 @@ mod tests {
     use super::*;
 
     #[test]
+    fn tst_remove_duplicates_c() {
+        for (idx, t) in tsts().iter_mut().enumerate() {
+            let act = remove_duplicates_c(&mut t.nums);
+            assert_eq!(act, t.ret, "idx:{} {:?}", idx, t);
+            assert!(t.nums[..t.ret as usize].is_sorted(), "idx:{} {:?}", idx, t);
+        }
+    }
+
+    #[test]
     fn tst_remove_duplicates_b() {
         for (idx, t) in tsts().iter_mut().enumerate() {
             let act = remove_duplicates_b(&mut t.nums);
             assert_eq!(act, t.ret, "idx:{} {:?}", idx, t);
+            assert!(t.nums[..t.ret as usize].is_sorted(), "idx:{} {:?}", idx, t);
         }
     }
 
@@ -78,6 +116,7 @@ mod tests {
         for (idx, t) in tsts().iter_mut().enumerate() {
             let act = remove_duplicates_a(&mut t.nums);
             assert_eq!(act, t.ret, "idx:{} {:?}", idx, t);
+            assert!(t.nums[..t.ret as usize].is_sorted(), "idx:{} {:?}", idx, t);
         }
     }
 
@@ -88,8 +127,8 @@ mod tests {
                 ret: 2,
             },
             Tst {
-                nums: vec![0, 1, 2, 2, 3, 0, 4, 2],
-                ret: 7,
+                nums: vec![0, 0, 1, 1, 1, 2, 2, 3, 3, 4],
+                ret: 5,
             },
         ]
     }
