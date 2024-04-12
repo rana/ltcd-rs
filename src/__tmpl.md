@@ -7,9 +7,6 @@
 # Complexity
 
 - Time complexity: `O()`
+    -
 - Space complexity: `O()`
-- 
-# Metrics
-
-Measured in CPU cycles.
-
+    -
