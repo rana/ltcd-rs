@@ -19,6 +19,45 @@
 /// * -100 <= nums[i] <= 100
 /// * nums is sorted in non-decreasing order.
 
+fn remove_duplicates_d(nums: &mut [i32]) -> i32 {
+    // Move unique elements to the left.
+    // Remove duplicate elements from the front of nums.
+    // The array is sorted.
+
+    /// `MAX_DUP` is the maximum number of duplicates.
+    /// `MAX_DUP = 1` means no duplicates.
+    // Contributes to O(1) space complexity.
+    const MAX_DUP: usize = 1;
+
+    // Check for the nums length
+    // minimum edge condition.
+    if nums.len() <= MAX_DUP {
+        return nums.len() as i32;
+    }
+
+    // Initialize left pointer variable.
+    // Variable contributes to O(1) space complexity.
+    // `lft` is the slow moving pointer.
+    // `lft` points to a unique element.
+    // `lft + 1` may be unique or duplicate.
+    let mut lft: usize = MAX_DUP;
+
+    // Loop until the right pointer is complete.
+    // Loop contributes to O(n) time complexity.
+    // `rht` is the fast moving pointer.
+    for rht in MAX_DUP..nums.len() {
+        // Search for right unique element that can move left.
+        if nums[lft - MAX_DUP] != nums[rht] {
+            // Move right element to the left.
+            nums[lft] = nums[rht];
+            lft += 1;
+        }
+    }
+
+    // `lft` is the length of the processed array.
+    lft as i32
+}
+
 fn remove_duplicates_c(nums: &mut [i32]) -> i32 {
     // Move unique elements to the left.
     // Remove duplicate elements from the front of nums.
@@ -92,6 +131,15 @@ fn remove_duplicates_a(nums: &mut [i32]) -> i32 {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn tst_remove_duplicates_d() {
+        for (idx, t) in tsts().iter_mut().enumerate() {
+            let act = remove_duplicates_d(&mut t.nums);
+            assert_eq!(act, t.ret, "idx:{} {:?}", idx, t);
+            assert!(t.nums[..t.ret as usize].is_sorted(), "idx:{} {:?}", idx, t);
+        }
+    }
 
     #[test]
     fn tst_remove_duplicates_c() {
