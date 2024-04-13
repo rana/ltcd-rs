@@ -25,7 +25,7 @@ pub fn merge_d(nums1: &mut [i32], m: i32, nums2: &mut [i32], n: i32) {
     // Cast m and n to usize for use in indexes.
     let (m, n) = (m as usize, n as usize);
 
-    // Use iterators to handle index boundry conditions.
+    // Use iterators to handle index boundary conditions.
 
     // Create read iterators of indexes for nums1 and nums2.
     // Iterate from back to front. Vectors are given in ascending order.
@@ -41,6 +41,7 @@ pub fn merge_d(nums1: &mut [i32], m: i32, nums2: &mut [i32], n: i32) {
     let itr_mrg = (0..m + n).rev(); // A time complexity O(m + n) portion.
 
     // Loop until merge iterator is complete.
+    // Loop contributes to O(n) time complexity.
     for idx_mrg in itr_mrg {
         match (opt1, opt2) {
             // Merge the larger element from nums1 or nums2.
@@ -64,11 +65,11 @@ pub fn merge_d(nums1: &mut [i32], m: i32, nums2: &mut [i32], n: i32) {
 }
 
 pub fn merge_c(nums1: &mut [i32], m: i32, nums2: &mut [i32], n: i32) {
-    // Cast m and n to uszie for use in indexes.
+    // Cast m and n to usize for use in indexes.
     let (m, n) = (m as usize, n as usize);
 
     // Create index iterators for nums1 and nums2.
-    // Use iterators to address boundry conditions.
+    // Use iterators to address boundary conditions.
     // Iterate from back to front. Vectors are in ascending order.
     let mut itr1 = (0..m).rev(); // A time complexity O(m) portion.
     let mut itr2 = (0..n).rev(); // The time complexity O(n) portion.
