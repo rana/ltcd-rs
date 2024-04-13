@@ -13,22 +13,22 @@
 /// * -10^9 <= nums[i] <= 10^9
 
 fn majority_element_c(nums: Vec<i32>) -> i32 {
-    // Majority element occurs at least
-    // half the length of `nums` times.
+    // Majority element occurs more than 
+    // half the time in `nums`.
 
     // Initialize supporting variables.
     // Contributes to O(1) space complexity.
-    let mut candidate: Option<i32> = None;
+    let mut candidate: i32 = 0;
     let mut cnt: u16 = 0;
 
     // Loop through each number in `nums`.
     // Contributes to O(n) time complexity.
     for num in nums {
         if cnt == 0 {
-            candidate = Some(num);
+            candidate = num;
         }
 
-        if candidate == Some(num) {
+        if candidate == num {
             cnt += 1;
         } else {
             cnt -= 1;
@@ -36,7 +36,7 @@ fn majority_element_c(nums: Vec<i32>) -> i32 {
     }
 
     // Candidate is now the majority element.
-    candidate.expect("no majority element")
+    candidate
 }
 
 fn majority_element_b(nums: Vec<i32>) -> i32 {
