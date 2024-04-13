@@ -17,4 +17,4 @@
 
 # ChatGPT
 
--
+- Solution with explanation

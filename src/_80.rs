@@ -43,8 +43,6 @@ fn remove_duplicates_c(nums: &mut [i32]) -> i32 {
     // Initialize left pointer variable.
     // Contributes to O(1) space complexity.
     // `lft` is the slow moving pointer.
-    // `lft` points to a unique element.
-    // `lft + 1` may be unique or duplicate.
     let mut lft: usize = MAX_DUP;
 
     // Loop until the right pointer is complete.
@@ -52,6 +50,7 @@ fn remove_duplicates_c(nums: &mut [i32]) -> i32 {
     // `rht` is the fast moving pointer.
     for rht in MAX_DUP..nums.len() {
         // Search for right unique element that can move left.
+        // `lft - MAX_DUP` points to a unique element.
         if nums[lft - MAX_DUP] < nums[rht] {
             // Move right element to the left.
             nums[lft] = nums[rht];

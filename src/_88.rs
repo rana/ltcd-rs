@@ -32,7 +32,7 @@ pub fn merge_d(nums1: &mut [i32], m: i32, nums2: &mut [i32], n: i32) {
     let mut itr1 = (0..m).rev(); // A time complexity O(m) portion.
     let mut itr2 = (0..n).rev(); // A time complexity O(n) portion.
 
-    // Initialize first indexes.
+    // Initialize read indexes.
     let mut opt1 = itr1.next();
     let mut opt2 = itr2.next();
 
