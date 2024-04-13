@@ -15,6 +15,6 @@
 - Space complexity: `O()`
     -
 
-# ChatGPT
+# ChatGPT 4
 
 - Solution with explanation
