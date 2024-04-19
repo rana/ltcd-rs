@@ -470,10 +470,10 @@ pub fn min_window_a(s: String, t: String) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use anyhow::{bail, Result};
-    use ben::*;
-    use std::fmt;
-    use Lbl::*;
+    // use anyhow::{bail, Result};
+    // use ben::*;
+    // use std::fmt;
+    // use Lbl::*;
 
     #[test]
     fn tst_min_window_b() {
@@ -537,103 +537,103 @@ mod tests {
         ret: String,
     }
 
-    #[test]
-    fn mtr() {
-        let mut stdy = Stdy::new();
-        let itr: u16 = 64;
+    // #[test]
+    // fn mtr() {
+    //     let mut stdy = Stdy::new();
+    //     let itr: u16 = 64;
 
-        // Register metric functions.
+    //     // Register metric functions.
 
-        stdy.reg_bld(&[MinWin, A], |x| {
-            x.ins_prm(Len(1), |tme| {
-                let tst = tsts()[0].clone();
-                tme.borrow_mut().start();
-                let ret = min_window_a(tst.s, tst.t);
-                tme.borrow_mut().stop();
-                ret
-            });
-        });
-        stdy.reg_bld(&[MinWin, B, Mcr], |x| {
-            x.ins_prm(Len(1), |tme| {
-                let tst = tsts()[0].clone();
-                tme.borrow_mut().start();
-                let ret = min_window_b_mcr(tst.s, tst.t);
-                tme.borrow_mut().stop();
-                ret
-            });
-        });
-        stdy.reg_bld(&[MinWin, B, Mcr, Idx], |x| {
-            x.ins_prm(Len(1), |tme| {
-                let tst = tsts()[0].clone();
-                tme.borrow_mut().start();
-                let ret = min_window_b_mcr_idx_usize(tst.s, tst.t);
-                tme.borrow_mut().stop();
-                ret
-            });
-        });
-        stdy.reg_bld(&[MinWin, B, Arr], |x| {
-            x.ins_prm(Len(1), |tme| {
-                let tst = tsts()[0].clone();
-                tme.borrow_mut().start();
-                let ret = min_window_b_arr(tst.s, tst.t);
-                tme.borrow_mut().stop();
-                ret
-            });
-        });
+    //     stdy.reg_bld(&[MinWin, A], |x| {
+    //         x.ins_prm(Len(1), |tme| {
+    //             let tst = tsts()[0].clone();
+    //             tme.borrow_mut().start();
+    //             let ret = min_window_a(tst.s, tst.t);
+    //             tme.borrow_mut().stop();
+    //             ret
+    //         });
+    //     });
+    //     stdy.reg_bld(&[MinWin, B, Mcr], |x| {
+    //         x.ins_prm(Len(1), |tme| {
+    //             let tst = tsts()[0].clone();
+    //             tme.borrow_mut().start();
+    //             let ret = min_window_b_mcr(tst.s, tst.t);
+    //             tme.borrow_mut().stop();
+    //             ret
+    //         });
+    //     });
+    //     stdy.reg_bld(&[MinWin, B, Mcr, Idx], |x| {
+    //         x.ins_prm(Len(1), |tme| {
+    //             let tst = tsts()[0].clone();
+    //             tme.borrow_mut().start();
+    //             let ret = min_window_b_mcr_idx_usize(tst.s, tst.t);
+    //             tme.borrow_mut().stop();
+    //             ret
+    //         });
+    //     });
+    //     stdy.reg_bld(&[MinWin, B, Arr], |x| {
+    //         x.ins_prm(Len(1), |tme| {
+    //             let tst = tsts()[0].clone();
+    //             tme.borrow_mut().start();
+    //             let ret = min_window_b_arr(tst.s, tst.t);
+    //             tme.borrow_mut().stop();
+    //             ret
+    //         });
+    //     });
 
-        // Define function queries.
-        let mut qry = QryBld::new();
-        let a_id = qry.sel(&[MinWin, A]);
-        let b_mcr_id = qry.sel(&[MinWin, B, Mcr]);
-        let b_mcr_idx_id = qry.sel(&[MinWin, B, Mcr, Idx]);
-        let b_arr_id = qry.sel(&[MinWin, B, Arr]);
+    //     // Define function queries.
+    //     let mut qry = QryBld::new();
+    //     let a_id = qry.sel(&[MinWin, A]);
+    //     let b_mcr_id = qry.sel(&[MinWin, B, Mcr]);
+    //     let b_mcr_idx_id = qry.sel(&[MinWin, B, Mcr, Idx]);
+    //     let b_arr_id = qry.sel(&[MinWin, B, Arr]);
 
-        qry.cmp(a_id, b_mcr_id);
-        qry.cmp(b_arr_id, b_mcr_id);
-        qry.cmp(b_mcr_idx_id, b_mcr_id);
+    //     qry.cmp(a_id, b_mcr_id);
+    //     qry.cmp(b_arr_id, b_mcr_id);
+    //     qry.cmp(b_mcr_idx_id, b_mcr_id);
 
-        // Run metric functions.
-        stdy.run(qry, itr).expect("err");
-    }
+    //     // Run metric functions.
+    //     stdy.run(qry, itr).expect("err");
+    // }
 
-    /// Benchmark labels.
-    #[repr(u8)]
-    #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
-    pub enum Lbl {
-        A,
-        B,
-        MinWin,
-        Arr,
-        Mcr,
-        Idx,
-        Len(u32),
-    }
-    impl fmt::Display for Lbl {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-            match *self {
-                A => write!(f, "a"),
-                B => write!(f, "b"),
-                MinWin => write!(f, "minwin"),
-                Arr => write!(f, "arr"),
-                Mcr => write!(f, "mcr"),
-                Idx => write!(f, "idx"),
-                Len(x) => {
-                    if f.alternate() {
-                        write!(f, "len")
-                    } else {
-                        write!(f, "len({})", x)
-                    }
-                }
-            }
-        }
-    }
-    impl EnumStructVal for Lbl {
-        fn val(&self) -> Result<u32> {
-            match *self {
-                Len(x) => Ok(x),
-                _ => bail!("label '{}' isn't a struct enum", self),
-            }
-        }
-    }
-    impl Label for Lbl {}
+    // /// Benchmark labels.
+    // #[repr(u8)]
+    // #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
+    // pub enum Lbl {
+    //     A,
+    //     B,
+    //     MinWin,
+    //     Arr,
+    //     Mcr,
+    //     Idx,
+    //     Len(u32),
+    // }
+    // impl fmt::Display for Lbl {
+    //     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    //         match *self {
+    //             A => write!(f, "a"),
+    //             B => write!(f, "b"),
+    //             MinWin => write!(f, "minwin"),
+    //             Arr => write!(f, "arr"),
+    //             Mcr => write!(f, "mcr"),
+    //             Idx => write!(f, "idx"),
+    //             Len(x) => {
+    //                 if f.alternate() {
+    //                     write!(f, "len")
+    //                 } else {
+    //                     write!(f, "len({})", x)
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+    // impl EnumStructVal for Lbl {
+    //     fn val(&self) -> Result<u32> {
+    //         match *self {
+    //             Len(x) => Ok(x),
+    //             _ => bail!("label '{}' isn't a struct enum", self),
+    //         }
+    //     }
+    // }
+    // impl Label for Lbl {}
 }

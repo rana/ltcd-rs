@@ -7,8 +7,8 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.82"
-ben = { git = "https://github.com/rana/ben.git", version = "0.3.0" }
+#ben = { git = "https://github.com/rana/ben.git", version = "0.3.0" }
 rand = "0.8.5"
 
-[profile.test]
-opt-level = 3
+#[profile.test]
+#opt-level = 3

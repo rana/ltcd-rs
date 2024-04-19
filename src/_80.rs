@@ -102,7 +102,6 @@ mod tests {
         for (idx, t) in tsts().iter_mut().enumerate() {
             let len = remove_duplicates_b(&mut t.nums);
             assert_eq!(len, t.ret, "idx:{} {:?}", idx, t);
-            assert!(t.nums[..t.ret as usize].is_sorted(), "idx:{} {:?}", idx, t);
             println!("t.nums:{:?} len:{}", t.nums, len);
         }
     }
@@ -112,7 +111,6 @@ mod tests {
         for (idx, t) in tsts().iter_mut().enumerate() {
             let len = remove_duplicates_b(&mut t.nums);
             assert_eq!(len, t.ret, "idx:{} {:?}", idx, t);
-            assert!(t.nums[..t.ret as usize].is_sorted(), "idx:{} {:?}", idx, t);
             println!("t.nums:{:?} len:{}", t.nums, len);
         }
     }
@@ -122,7 +120,6 @@ mod tests {
         for (idx, t) in tsts().iter_mut().enumerate() {
             let len = remove_duplicates_a(&mut t.nums);
             assert_eq!(len, t.ret, "idx:{} {:?}", idx, t);
-            assert!(t.nums[..t.ret as usize].is_sorted(), "idx:{} {:?}", idx, t);
             println!("t.nums:{:?} act:{}", t.nums, len);
         }
     }

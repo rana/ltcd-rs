@@ -160,16 +160,15 @@ fn merge_a(nums1: &mut [i32], m: i32, nums2: &mut [i32], n: i32) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use anyhow::{bail, Result};
-    use ben::*;
-    use std::fmt;
-    use Lbl::*;
+    // use anyhow::{bail, Result};
+    // use ben::*;
+    // use std::fmt;
+    // use Lbl::*;
 
     #[test]
     fn tst_merge_d() {
         for (idx, t) in tsts().iter_mut().enumerate() {
             merge_d(&mut t.nums1, t.m, &mut t.nums2, t.n);
-            assert!(t.nums1.is_sorted(), "idx:{} {:?}", idx, t);
             assert_eq!(t.nums1, t.ret, "idx:{} {:?}", idx, t)
         }
     }
@@ -178,7 +177,6 @@ mod tests {
     fn tst_merge_c() {
         for (idx, t) in tsts().iter_mut().enumerate() {
             merge_c(&mut t.nums1, t.m, &mut t.nums2, t.n);
-            assert!(t.nums1.is_sorted(), "idx:{} {:?}", idx, t);
             assert_eq!(t.nums1, t.ret, "idx:{} {:?}", idx, t)
         }
     }
@@ -187,7 +185,6 @@ mod tests {
     fn tst_merge_b() {
         for (idx, t) in tsts().iter_mut().enumerate() {
             merge_b(&mut t.nums1, t.m, &mut t.nums2, t.n);
-            assert!(t.nums1.is_sorted(), "idx:{} {:?}", idx, t);
             assert_eq!(t.nums1, t.ret, "idx:{} {:?}", idx, t)
         }
     }
@@ -196,7 +193,6 @@ mod tests {
     fn tst_merge_a() {
         for (idx, t) in tsts().iter_mut().enumerate() {
             merge_a(&mut t.nums1, t.m, &mut t.nums2, t.n);
-            assert!(t.nums1.is_sorted(), "idx:{} {:?}", idx, t);
             assert_eq!(t.nums1, t.ret, "idx:{} {:?}", idx, t)
         }
     }
@@ -236,86 +232,86 @@ mod tests {
         ret: Vec<i32>,
     }
 
-    #[test]
-    fn mtr() {
-        let mut stdy = Stdy::new();
-        let itr: u16 = 64;
+    // #[test]
+    // fn mtr() {
+    //     let mut stdy = Stdy::new();
+    //     let itr: u16 = 64;
 
-        // Register metric functions.
+    //     // Register metric functions.
 
-        stdy.reg_bld(&[A], |x| {
-            x.ins_prm(Len(1), |tme| {
-                let mut t = tsts()[0].clone();
-                tme.borrow_mut().start();
-                merge_a(&mut t.nums1, t.m, &mut t.nums2, t.n);
-                tme.borrow_mut().stop();
-                t.nums1
-            });
-        });
-        stdy.reg_bld(&[B], |x| {
-            x.ins_prm(Len(1), |tme| {
-                let mut t = tsts()[0].clone();
-                tme.borrow_mut().start();
-                merge_b(&mut t.nums1, t.m, &mut t.nums2, t.n);
-                tme.borrow_mut().stop();
-                t.nums1
-            });
-        });
-        stdy.reg_bld(&[D], |x| {
-            x.ins_prm(Len(1), |tme| {
-                let mut t = tsts()[0].clone();
-                tme.borrow_mut().start();
-                merge_d(&mut t.nums1, t.m, &mut t.nums2, t.n);
-                tme.borrow_mut().stop();
-                t.nums1
-            });
-        });
+    //     stdy.reg_bld(&[A], |x| {
+    //         x.ins_prm(Len(1), |tme| {
+    //             let mut t = tsts()[0].clone();
+    //             tme.borrow_mut().start();
+    //             merge_a(&mut t.nums1, t.m, &mut t.nums2, t.n);
+    //             tme.borrow_mut().stop();
+    //             t.nums1
+    //         });
+    //     });
+    //     stdy.reg_bld(&[B], |x| {
+    //         x.ins_prm(Len(1), |tme| {
+    //             let mut t = tsts()[0].clone();
+    //             tme.borrow_mut().start();
+    //             merge_b(&mut t.nums1, t.m, &mut t.nums2, t.n);
+    //             tme.borrow_mut().stop();
+    //             t.nums1
+    //         });
+    //     });
+    //     stdy.reg_bld(&[D], |x| {
+    //         x.ins_prm(Len(1), |tme| {
+    //             let mut t = tsts()[0].clone();
+    //             tme.borrow_mut().start();
+    //             merge_d(&mut t.nums1, t.m, &mut t.nums2, t.n);
+    //             tme.borrow_mut().stop();
+    //             t.nums1
+    //         });
+    //     });
 
-        // Define function queries.
-        let mut qry = QryBld::new();
-        let a_id = qry.sel(&[A]);
-        let b_id = qry.sel(&[B]);
-        let d_id = qry.sel(&[D]);
+    //     // Define function queries.
+    //     let mut qry = QryBld::new();
+    //     let a_id = qry.sel(&[A]);
+    //     let b_id = qry.sel(&[B]);
+    //     let d_id = qry.sel(&[D]);
 
-        qry.cmp(a_id, b_id);
-        qry.cmp(d_id, b_id);
+    //     qry.cmp(a_id, b_id);
+    //     qry.cmp(d_id, b_id);
 
-        // Run metric functions.
-        stdy.run(qry, itr).expect("err");
-    }
+    //     // Run metric functions.
+    //     stdy.run(qry, itr).expect("err");
+    // }
 
-    /// Benchmark labels.
-    #[repr(u8)]
-    #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
-    pub enum Lbl {
-        A,
-        B,
-        D,
-        Len(u32),
-    }
-    impl fmt::Display for Lbl {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-            match *self {
-                A => write!(f, "a"),
-                B => write!(f, "b"),
-                D => write!(f, "d"),
-                Len(x) => {
-                    if f.alternate() {
-                        write!(f, "len")
-                    } else {
-                        write!(f, "len({})", x)
-                    }
-                }
-            }
-        }
-    }
-    impl EnumStructVal for Lbl {
-        fn val(&self) -> Result<u32> {
-            match *self {
-                Len(x) => Ok(x),
-                _ => bail!("label '{}' isn't a struct enum", self),
-            }
-        }
-    }
-    impl Label for Lbl {}
+    // /// Benchmark labels.
+    // #[repr(u8)]
+    // #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
+    // pub enum Lbl {
+    //     A,
+    //     B,
+    //     D,
+    //     Len(u32),
+    // }
+    // impl fmt::Display for Lbl {
+    //     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    //         match *self {
+    //             A => write!(f, "a"),
+    //             B => write!(f, "b"),
+    //             D => write!(f, "d"),
+    //             Len(x) => {
+    //                 if f.alternate() {
+    //                     write!(f, "len")
+    //                 } else {
+    //                     write!(f, "len({})", x)
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+    // impl EnumStructVal for Lbl {
+    //     fn val(&self) -> Result<u32> {
+    //         match *self {
+    //             Len(x) => Ok(x),
+    //             _ => bail!("label '{}' isn't a struct enum", self),
+    //         }
+    //     }
+    // }
+    // impl Label for Lbl {}
 }

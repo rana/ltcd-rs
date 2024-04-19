@@ -1,4 +1,3 @@
-#![feature(is_sorted)]
 #![allow(dead_code)]
 
 mod _12;
@@ -25,3 +24,4 @@ mod _88;
 mod _151;
 mod _6;
 mod _28;
+mod _68;
