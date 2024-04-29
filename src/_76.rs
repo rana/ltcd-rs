@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 /// 76. Minimum Window Substring
 ///
 /// Given two strings s and t of lengths m and n respectively,
@@ -15,7 +13,224 @@ use std::collections::HashMap;
 /// * n == t.length
 /// * 1 <= m, n <= 10^5
 /// * s and t consist of uppercase and lowercase English letters.
-pub fn min_window_b(s: String, t: String) -> String {
+
+fn min_window(s: String, t: String) -> String {
+    use std::collections::HashMap;
+
+    // Count expected character frequencies.
+    let mut exp_cnts = HashMap::new();
+    for chr in t.chars() {
+        *exp_cnts.entry(chr).or_insert(0) += 1;
+    }
+
+    let mut obs_cnts = HashMap::new();
+    let mut vld_chr_cnt: usize = 0;
+    let mut lft: usize = 0;
+    let mut rht: usize = 0;
+    let mut wnd_len_min: usize = usize::MAX;
+    let mut ret = "";
+
+    while rht < s.len() {
+        let rht_chr = s.chars().nth(rht).unwrap();
+        rht += 1;
+
+        // Check for a valid character.
+        if exp_cnts.contains_key(&rht_chr) {
+            // Increment the observed count.
+            *obs_cnts.entry(rht_chr).or_insert(0) += 1;
+            // Increment the valid character count.
+            if obs_cnts[&rht_chr] == exp_cnts[&rht_chr] {
+                vld_chr_cnt += 1;
+            }
+        }
+
+        // Check for a valid solution.
+        while vld_chr_cnt == exp_cnts.len() {
+            // Store a valid solution if smallest.
+            let wnd_len = rht - lft;
+            if wnd_len < wnd_len_min {
+                wnd_len_min = wnd_len;
+                ret = &s[lft..rht];
+            }
+
+            // Shrink the window on the left side.
+            let lft_chr = s.chars().nth(lft).unwrap();
+            lft += 1;
+            // Check for a valid left character.
+            if exp_cnts.contains_key(&lft_chr) {
+                // Decrement the valid character count.
+                if obs_cnts[&lft_chr] == exp_cnts[&lft_chr] {
+                    vld_chr_cnt -= 1;
+                }
+                // Decrement the observed count.
+                *obs_cnts.entry(lft_chr).or_insert(0) -= 1;
+            }
+        }
+    }
+
+    ret.to_string()
+}
+
+fn min_window_e(s: String, t: String) -> String {
+    use std::collections::HashMap;
+
+    // Count expected character frequencies.
+    let mut exp_cnts = HashMap::new();
+    for chr in t.chars() {
+        *exp_cnts.entry(chr).or_insert(0) += 1;
+    }
+
+    let mut obs_cnts = HashMap::new();
+    let mut lft: usize = 0;
+    let mut rht: usize = 0;
+    let mut vld_chr_cht: usize = 0;
+    let mut wnd_len_min: usize = usize::MAX;
+    let mut ret = "";
+
+    // Loop through string `s`.
+    while rht < s.len() {
+        let rht_chr = s.chars().nth(rht).unwrap();
+        rht += 1;
+
+        // Check for valid character.
+        if exp_cnts.contains_key(&rht_chr) {
+            // Valid character.
+            // Increment the observed count.
+            *obs_cnts.entry(rht_chr).or_insert(0) += 1;
+            // Increment the valid character count.
+            if exp_cnts[&rht_chr] == obs_cnts[&rht_chr] {
+                vld_chr_cht += 1;
+            }
+        }
+
+        // Check for a valid window.
+        while vld_chr_cht == exp_cnts.len() {
+            // Store a solution if smallest length.
+            let wnd_len = rht - lft;
+            if wnd_len < wnd_len_min {
+                wnd_len_min = wnd_len;
+                ret = &s[lft..rht];
+            }
+
+            // Shrink the window on the left side.
+            let lft_chr = s.chars().nth(lft).unwrap();
+            lft += 1;
+            if exp_cnts.contains_key(&lft_chr) {
+                // Increment the valid character count.
+                if exp_cnts[&lft_chr] == obs_cnts[&lft_chr] {
+                    vld_chr_cht -= 1;
+                }
+                // Decrement the observed character count.
+                *obs_cnts.get_mut(&lft_chr).unwrap() -= 1;
+            }
+        }
+    }
+
+    ret.to_string()
+}
+
+fn min_window_d(s: String, t: String) -> String {
+    use std::collections::HashMap;
+
+    // Frequency maps to store counts of characters in t and current window
+    let mut t_freq = HashMap::new();
+    let mut window_freq = HashMap::new();
+
+    // Fill frequency map for characters in t
+    for ch in t.chars() {
+        *t_freq.entry(ch).or_insert(0) += 1;
+    }
+
+    let mut left = 0; // Left pointer
+    let mut right = 0; // Right pointer
+    let mut valid_chars = 0; // Number of valid characters in the window
+    let mut min_len = usize::MAX; // Minimum length of a valid window
+    let mut result = ""; // Substring to store result
+
+    while right < s.len() {
+        let right_char = s.chars().nth(right).unwrap(); // Get char at right pointer
+        right += 1; // Increment right pointer
+
+        if t_freq.contains_key(&right_char) {
+            *window_freq.entry(right_char).or_insert(0) += 1;
+            if window_freq[&right_char] == t_freq[&right_char] {
+                valid_chars += 1;
+            }
+        }
+
+        // Check if window is valid
+        while valid_chars == t_freq.len() {
+            let current_len = right - left; // Length of current window
+            if current_len < min_len {
+                min_len = current_len;
+                result = &s[left..right];
+            }
+
+            let left_char = s.chars().nth(left).unwrap(); // Get char at left pointer
+            left += 1; // Increment left pointer
+
+            if t_freq.contains_key(&left_char) {
+                if window_freq[&left_char] == t_freq[&left_char] {
+                    valid_chars -= 1;
+                }
+                *window_freq.get_mut(&left_char).unwrap() -= 1;
+            }
+        }
+    }
+
+    result.to_string() // Return the resulting string
+}
+
+fn min_window_c(s: String, t: String) -> String {
+    use std::collections::HashMap;
+
+    let mut need: HashMap<char, i32> = HashMap::new();
+    t.chars().for_each(|ch| *need.entry(ch).or_insert(0) += 1);
+
+    let (mut left, mut right, mut valid) = (0, 0, 0);
+    let mut window: HashMap<char, i32> = HashMap::new();
+    let mut min_len = std::usize::MAX;
+    let mut start = 0;
+
+    let s_chars: Vec<char> = s.chars().collect();
+
+    while right < s.len() {
+        let c = s_chars[right];
+        right += 1;
+
+        if need.contains_key(&c) {
+            *window.entry(c).or_insert(0) += 1;
+            if window.get(&c) == need.get(&c) {
+                valid += 1;
+            }
+        }
+
+        while valid == need.len() {
+            if right - left < min_len {
+                start = left;
+                min_len = right - left;
+            }
+
+            let d = s_chars[left];
+            left += 1;
+
+            if need.contains_key(&d) {
+                if window.get(&d) == need.get(&d) {
+                    valid -= 1;
+                }
+                *window.entry(d).or_default() -= 1;
+            }
+        }
+    }
+
+    if min_len == std::usize::MAX {
+        String::new()
+    } else {
+        s[start..start + min_len].to_string()
+    }
+}
+
+fn min_window_b(s: String, t: String) -> String {
     /// `Wnd` is a window with index ranges.
     #[derive(Default, Debug, Clone, Copy)]
     struct Wnd {
@@ -98,268 +313,10 @@ pub fn min_window_b(s: String, t: String) -> String {
     min.map_or("".into(), |min| s[min.lft..min.rht].into())
 }
 
-pub fn min_window_b_mcr(s: String, t: String) -> String {
-    /// `Wnd` is a window with index ranges.
-    #[derive(Default, Debug, Clone, Copy)]
-    struct Wnd {
-        /// `lft` is the left index of a window.
-        /// Use `u32` as an optimization.
-        lft: u32,
-        /// `rht` is the right index of a window.
-        /// Use `u32` as an optimization.
-        rht: u32,
-    }
-
-    // Create a character frequency map.
-    // Use an array due to the known character range.
-    // b'A':65   b'z':122
-    // Add one to the size because b'z' is an inclusive index.
-    let mut cnts = [0i32; (b'z' - b'A' + 1) as usize];
-
-    // Use a macro as an optimization.
-    // Allows u8 as a key to a frequency count.
-    macro_rules! cnts  {
-            [$key:expr] => (cnts[($key - b'A') as usize])
-        }
-
-    // Count the frequency of valid characters.
-    t.bytes().for_each(|byt| cnts![byt] += 1);
-
-    // Initialize sliding window variables.
-    // Use `u32` as an optimization.
-    let byts = s.as_bytes();
-    let str_len = byts.len() as u32;
-    let mut tgt_wnd_len = t.len() as u32;
-    let mut min: Option<Wnd> = None;
-    let mut cur = Wnd::default();
-
-    // Work towards a target window length of zero.
-    while cur.rht < str_len {
-        // Expand the window on the right side.
-
-        // Check whether we can approach a valid window.
-        // Check whether we have a valid frequency count of a valid character.
-        if cnts![byts[cur.rht as usize]] > 0 {
-            // Decrement the target window length.
-            // Target window length of zero means we have a success condition.
-            tgt_wnd_len -= 1;
-        }
-
-        // Decrement the frequency count of the character at the right index.
-        // Valid characters will approach zero.
-        // Invalid characters will approach i32::MIN.
-        cnts![byts[cur.rht as usize]] -= 1;
-
-        // Advance the right index of the window.
-        cur.rht += 1;
-
-        // Check whether we have a valid window.
-        // Valid window is when `tgt_wnd_len == 0`.
-        while tgt_wnd_len == 0 {
-            // Check for a minimum window.
-            if cur.rht - cur.lft < min.map_or(u32::MAX, |min| min.rht - min.lft) {
-                min = Some(cur);
-            }
-
-            // Shrink the window on the left side.
-
-            // Increment the count of the left character.
-            // Valid characters will have a character count above zero.
-            // Invalid characters will approach zero.
-            cnts![byts[cur.lft as usize]] += 1;
-
-            // Check whether we can increase the target window length.
-            if cnts![byts[cur.lft as usize]] > 0 {
-                // Increment the target window length.
-                // Moves away from a valid window.
-                tgt_wnd_len += 1;
-            }
-
-            // Increment the left index.
-            cur.lft += 1;
-        }
-    }
-
-    // Return the minimum window string; or, an empty string.
-    min.map_or("".into(), |min| {
-        s[min.lft as usize..min.rht as usize].into()
-    })
-}
-
-pub fn min_window_b_mcr_idx_usize(s: String, t: String) -> String {
-    /// `Wnd` is a window with index ranges.
-    #[derive(Default, Debug, Clone, Copy)]
-    struct Wnd {
-        /// `lft` is the left index of a window.
-        lft: usize,
-        /// `rht` is the right index of a window.
-        rht: usize,
-    }
-
-    // Create a character frequency map.
-    // Use an array due to the known character range.
-    // b'A':65   b'z':122
-    // Add one to the size because b'z' is an inclusive index.
-    let mut cnts = [0i32; (b'z' - b'A' + 1) as usize];
-
-    // Use a macro as an optimization.
-    // Allows u8 as a key to a frequency count.
-    macro_rules! cnts  {
-            [$key:expr] => (cnts[($key - b'A') as usize])
-        }
-
-    // Count the frequency of valid characters.
-    t.bytes().for_each(|byt| cnts![byt] += 1);
-
-    // Initialize sliding window variables.
-    // Use `u32` as an optimization.
-    let byts = s.as_bytes();
-    let str_len = byts.len();
-    let mut tgt_wnd_len = t.len();
-    let mut min: Option<Wnd> = None;
-    let mut cur = Wnd::default();
-
-    // Work towards a target window length of zero.
-    while cur.rht < str_len {
-        // Expand the window on the right side.
-
-        // Check whether we can approach a valid window.
-        // Check whether we have a valid frequency count of a valid character.
-        if cnts![byts[cur.rht]] > 0 {
-            // Decrement the target window length.
-            // Target window length of zero means we have a success condition.
-            tgt_wnd_len -= 1;
-        }
-
-        // Decrement the frequency count of the character at the right index.
-        // Valid characters will approach zero.
-        // Invalid characters will approach i32::MIN.
-        cnts![byts[cur.rht]] -= 1;
-
-        // Advance the right index of the window.
-        cur.rht += 1;
-
-        // Check whether we have a valid window.
-        // Valid window is when `tgt_wnd_len == 0`.
-        while tgt_wnd_len == 0 {
-            // Check for a minimum window.
-            if cur.rht - cur.lft < min.map_or(usize::MAX, |min| min.rht - min.lft) {
-                min = Some(cur);
-            }
-
-            // Shrink the window on the left side.
-
-            // Increment the count of the left character.
-            // Valid characters will have a character count above zero.
-            // Invalid characters will approach zero.
-            cnts![byts[cur.lft]] += 1;
-
-            // Check whether we can increase the target window length.
-            if cnts![byts[cur.lft]] > 0 {
-                // Increment the target window length.
-                // Moves away from a valid window.
-                tgt_wnd_len += 1;
-            }
-
-            // Increment the left index.
-            cur.lft += 1;
-        }
-    }
-
-    // Return the minimum window string; or, an empty string.
-    min.map_or("".into(), |min| s[min.lft..min.rht].into())
-}
-
-pub fn min_window_b_arr(s: String, t: String) -> String {
-    /// `Wnd` is a window with index ranges.
-    #[derive(Default, Debug, Clone, Copy)]
-    struct Wnd {
-        /// `lft` is the left index of a window.
-        /// Use `u32` as an optimization.
-        lft: u32,
-        /// `rht` is the right index of a window.
-        /// Use `u32` as an optimization.
-        rht: u32,
-    }
-
-    // Create a character frequency map.
-    // Use an array due to the known character range.
-    // b'A':65   b'z':122
-    // Add one to the size because b'z' is an inclusive index.
-    let mut cnts = [0i32; (b'z' - b'A' + 1) as usize];
-
-    // Use a macro as an optimization.
-    // Allows u8 as a key to a frequency count.
-    // macro_rules! cnts  {
-    //         [$key:expr] => (cnts[($key - b'A') as usize])
-    //     }
-
-    // Count the frequency of valid characters.
-    t.bytes().for_each(|byt| cnts[(byt - b'A') as usize] += 1);
-
-    // Initialize sliding window variables.
-    // Use `u32` as an optimization.
-    let byts = s.as_bytes();
-    let str_len = byts.len() as u32;
-    let mut tgt_wnd_len = t.len() as u32;
-    let mut min: Option<Wnd> = None;
-    let mut cur = Wnd::default();
-
-    // Work towards a target window length of zero.
-    while cur.rht < str_len {
-        // Expand the window on the right side.
-
-        // Check whether we can approach a valid window.
-        // Check whether we have a valid frequency count of a valid character.
-        if cnts[(byts[cur.rht as usize] - b'A') as usize] > 0 {
-            // Decrement the target window length.
-            // Target window length of zero means we have a success condition.
-            tgt_wnd_len -= 1;
-        }
-
-        // Decrement the frequency count of the character at the right index.
-        // Valid characters will approach zero.
-        // Invalid characters will approach i32::MIN.
-        cnts[(byts[cur.rht as usize] - b'A') as usize] -= 1;
-
-        // Advance the right index of the window.
-        cur.rht += 1;
-
-        // Check whether we have a valid window.
-        // Valid window is when `tgt_wnd_len == 0`.
-        while tgt_wnd_len == 0 {
-            // Check for a minimum window.
-            if cur.rht - cur.lft < min.map_or(u32::MAX, |min| min.rht - min.lft) {
-                min = Some(cur);
-            }
-
-            // Shrink the window on the left side.
-
-            // Increment the count of the left character.
-            // Valid characters will have a character count above zero.
-            // Invalid characters will approach zero.
-            cnts[(byts[cur.lft as usize] - b'A') as usize] += 1;
-
-            // Check whether we can increase the target window length.
-            if cnts[(byts[cur.lft as usize] - b'A') as usize] > 0 {
-                // Increment the target window length.
-                // Moves away from a valid window.
-                tgt_wnd_len += 1;
-            }
-
-            // Increment the left index.
-            cur.lft += 1;
-        }
-    }
-
-    // Return the minimum window string; or, an empty string.
-    min.map_or("".into(), |min| {
-        s[min.lft as usize..min.rht as usize].into()
-    })
-}
-
-pub fn min_window_a(s: String, t: String) -> String {
+fn min_window_a(s: String, t: String) -> String {
     // Algorithm: Sliding window with two pointers.
+
+    use std::collections::HashMap;
 
     /// `Frq` is a frequency count of a character.
     #[derive(Default, Debug)]
@@ -391,7 +348,7 @@ pub fn min_window_a(s: String, t: String) -> String {
         return String::new();
     }
 
-    // Transform characters to bytes for time efficency and space efficency.
+    // Transform characters to bytes for time efficiency and space efficiency.
     let s = s.as_bytes();
     let t = t.as_bytes();
 
@@ -469,171 +426,53 @@ pub fn min_window_a(s: String, t: String) -> String {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    // use anyhow::{bail, Result};
-    // use ben::*;
-    // use std::fmt;
-    // use Lbl::*;
+    use super::min_window;
 
     #[test]
-    fn tst_min_window_b() {
-        for tst in tsts() {
-            assert_eq!(min_window_b(tst.s, tst.t), tst.ret);
-        }
+    fn test_common_case_1() {
+        let s = String::from("ADOBECODEBANC");
+        let t = String::from("ABC");
+        let expected = String::from("BANC");
+        assert_eq!(min_window(s, t), expected);
     }
 
     #[test]
-    fn tst_min_window_b_mcr() {
-        for tst in tsts() {
-            assert_eq!(min_window_b_mcr(tst.s, tst.t), tst.ret);
-        }
+    fn test_common_case_2() {
+        let s = String::from("a");
+        let t = String::from("a");
+        let expected = String::from("a");
+        assert_eq!(min_window(s, t), expected);
     }
 
     #[test]
-    fn tst_min_window_b_mcr_idx_usize() {
-        for tst in tsts() {
-            assert_eq!(min_window_b_mcr_idx_usize(tst.s, tst.t), tst.ret);
-        }
+    fn test_edge_case_empty_s() {
+        let s = String::from("");
+        let t = String::from("ABC");
+        let expected = String::from("");
+        assert_eq!(min_window(s, t), expected);
     }
 
     #[test]
-    fn tst_min_window_b_arr() {
-        for tst in tsts() {
-            assert_eq!(min_window_b_arr(tst.s, tst.t), tst.ret);
-        }
+    fn test_no_valid_window() {
+        let s = String::from("ADOBECODEBANC");
+        let t = String::from("XYZ");
+        let expected = String::from("");
+        assert_eq!(min_window(s, t), expected);
     }
 
     #[test]
-    fn tst_min_window_a() {
-        for tst in tsts() {
-            assert_eq!(min_window_a(tst.s, tst.t), tst.ret);
-        }
+    fn test_t_longer_than_s() {
+        let s = String::from("A");
+        let t = String::from("ABC");
+        let expected = String::from("");
+        assert_eq!(min_window(s, t), expected);
     }
 
-    fn tsts() -> Vec<Tst> {
-        vec![
-            Tst {
-                s: "ADOBECODEBANC".into(),
-                t: "ABC".into(),
-                ret: "BANC".into(),
-            },
-            Tst {
-                s: "a".into(),
-                t: "a".into(),
-                ret: "a".into(),
-            },
-            Tst {
-                s: "a".into(),
-                t: "aa".into(),
-                ret: "".into(),
-            },
-        ]
+    #[test]
+    fn test_multiple_valid_windows() {
+        let s = String::from("ABBCABB");
+        let t = String::from("AB");
+        let expected = String::from("AB");
+        assert_eq!(min_window(s, t), expected);
     }
-
-    #[derive(Clone, Debug)]
-    struct Tst {
-        s: String,
-        t: String,
-        ret: String,
-    }
-
-    // #[test]
-    // fn mtr() {
-    //     let mut stdy = Stdy::new();
-    //     let itr: u16 = 64;
-
-    //     // Register metric functions.
-
-    //     stdy.reg_bld(&[MinWin, A], |x| {
-    //         x.ins_prm(Len(1), |tme| {
-    //             let tst = tsts()[0].clone();
-    //             tme.borrow_mut().start();
-    //             let ret = min_window_a(tst.s, tst.t);
-    //             tme.borrow_mut().stop();
-    //             ret
-    //         });
-    //     });
-    //     stdy.reg_bld(&[MinWin, B, Mcr], |x| {
-    //         x.ins_prm(Len(1), |tme| {
-    //             let tst = tsts()[0].clone();
-    //             tme.borrow_mut().start();
-    //             let ret = min_window_b_mcr(tst.s, tst.t);
-    //             tme.borrow_mut().stop();
-    //             ret
-    //         });
-    //     });
-    //     stdy.reg_bld(&[MinWin, B, Mcr, Idx], |x| {
-    //         x.ins_prm(Len(1), |tme| {
-    //             let tst = tsts()[0].clone();
-    //             tme.borrow_mut().start();
-    //             let ret = min_window_b_mcr_idx_usize(tst.s, tst.t);
-    //             tme.borrow_mut().stop();
-    //             ret
-    //         });
-    //     });
-    //     stdy.reg_bld(&[MinWin, B, Arr], |x| {
-    //         x.ins_prm(Len(1), |tme| {
-    //             let tst = tsts()[0].clone();
-    //             tme.borrow_mut().start();
-    //             let ret = min_window_b_arr(tst.s, tst.t);
-    //             tme.borrow_mut().stop();
-    //             ret
-    //         });
-    //     });
-
-    //     // Define function queries.
-    //     let mut qry = QryBld::new();
-    //     let a_id = qry.sel(&[MinWin, A]);
-    //     let b_mcr_id = qry.sel(&[MinWin, B, Mcr]);
-    //     let b_mcr_idx_id = qry.sel(&[MinWin, B, Mcr, Idx]);
-    //     let b_arr_id = qry.sel(&[MinWin, B, Arr]);
-
-    //     qry.cmp(a_id, b_mcr_id);
-    //     qry.cmp(b_arr_id, b_mcr_id);
-    //     qry.cmp(b_mcr_idx_id, b_mcr_id);
-
-    //     // Run metric functions.
-    //     stdy.run(qry, itr).expect("err");
-    // }
-
-    // /// Benchmark labels.
-    // #[repr(u8)]
-    // #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
-    // pub enum Lbl {
-    //     A,
-    //     B,
-    //     MinWin,
-    //     Arr,
-    //     Mcr,
-    //     Idx,
-    //     Len(u32),
-    // }
-    // impl fmt::Display for Lbl {
-    //     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    //         match *self {
-    //             A => write!(f, "a"),
-    //             B => write!(f, "b"),
-    //             MinWin => write!(f, "minwin"),
-    //             Arr => write!(f, "arr"),
-    //             Mcr => write!(f, "mcr"),
-    //             Idx => write!(f, "idx"),
-    //             Len(x) => {
-    //                 if f.alternate() {
-    //                     write!(f, "len")
-    //                 } else {
-    //                     write!(f, "len({})", x)
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-    // impl EnumStructVal for Lbl {
-    //     fn val(&self) -> Result<u32> {
-    //         match *self {
-    //             Len(x) => Ok(x),
-    //             _ => bail!("label '{}' isn't a struct enum", self),
-    //         }
-    //     }
-    // }
-    // impl Label for Lbl {}
 }
