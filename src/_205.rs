@@ -17,6 +17,40 @@
 /// * s and t consist of any valid ascii character.
 
 fn is_isomorphic(s: String, t: String) -> bool {
+    // Map each character in s to t.
+    // Map each character in t to s.
+    // Return false, if more than one mapping is attempted.
+    // Time complexity: O(n).
+    //  - n is the length of both string s and string t.
+    // Space complexity: O(1).
+    //  - Constant space dues to 128 ASCII letters.
+    const CHR_LEN: usize = 128;
+
+    let mut s_to_t: [Option<u8>; CHR_LEN] = [None; CHR_LEN];
+    let mut t_to_s: [Option<u8>; CHR_LEN] = [None; CHR_LEN];
+
+    for (&s_chr, &t_chr) in s.as_bytes().iter().zip(t.as_bytes()) {
+        if let Some(t_map) = s_to_t[s_chr as usize] {
+            if t_map != t_chr {
+                return false;
+            }
+        } else {
+            s_to_t[s_chr as usize] = Some(t_chr)
+        }
+
+        if let Some(s_map) = t_to_s[t_chr as usize] {
+            if s_map != s_chr {
+                return false;
+            }
+        } else {
+            t_to_s[t_chr as usize] = Some(s_chr);
+        }
+    }
+
+    true
+}
+
+fn is_isomorphic_c(s: String, t: String) -> bool {
     // Map each character from s to t.
     // Map each character from t to s.
     // Return false if a character has already been mapped.
