@@ -10,6 +10,47 @@
 /// * -100 <= matrix[i][j] <= 100
 
 fn spiral_order(mat: Vec<Vec<i32>>) -> Vec<i32> {
+    let mut ret: Vec<i32> = Vec::with_capacity(mat.len() * mat[0].len());
+    let mut lft: usize = 0;
+    let mut rht: usize = mat[0].len();
+    let mut top: usize = 0;
+    let mut btm: usize = mat.len();
+
+    // Loop through matrix: top-rht-btm-lft.
+    while lft < rht && top < btm {
+        // Traverse top row.
+        for x in lft..rht {
+            ret.push(mat[top][x]);
+        }
+        top += 1;
+
+        // Traverse right column.
+        for y in top..btm {
+            ret.push(mat[y][rht - 1]);
+        }
+        rht -= 1;
+
+        // Traverse bottom row.
+        if top < btm {
+            for x in (lft..rht).rev() {
+                ret.push(mat[btm - 1][x]);
+            }
+            btm -= 1;
+        }
+
+        // Traverse left column.
+        if lft < rht {
+            for y in (top..btm).rev() {
+                ret.push(mat[y][lft]);
+            }
+            lft += 1;
+        }
+    }
+
+    ret
+}
+
+fn spiral_order_b(mat: Vec<Vec<i32>>) -> Vec<i32> {
     let cell_cnt = mat[0].len() * mat.len();
     let mut ret = Vec::with_capacity(cell_cnt);
     let mut lft: usize = 0;
