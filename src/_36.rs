@@ -25,7 +25,51 @@
 /// * board[i][j] is a digit 1-9 or '.'.
 
 fn is_valid_sudoku(brd: Vec<Vec<char>>) -> bool {
-    // Time complexity: O(1), a constant number of matrix elements 
+    // Create a HashSet for each row, column, and box.
+    // Insert each available digit into the sets.
+    // Return false if there's an attempt to insert
+    // a digit which is already inserted.
+    // Time complexity: O(1).
+    //  - Constant number 9x9=81 of elements in the matrix.
+    // Space complexity: O(1)
+    //  - 9x9 matrix is constant. Variables used are constant.
+    const BRD_LEN: usize = 9;
+    const CHR_SKP: char = '.';
+
+    use std::collections::HashSet;
+    let mut rows = vec![HashSet::<char>::new(); BRD_LEN];
+    let mut cols = vec![HashSet::<char>::new(); BRD_LEN];
+    let mut boxs = vec![HashSet::<char>::new(); BRD_LEN];
+
+    // Loop through each matrix element.
+    for y in 0..BRD_LEN {
+        for x in 0..BRD_LEN {
+            // Get the current character.
+            let chr = brd[y][x];
+            // Check whether to skip the current character.
+            if chr == CHR_SKP {
+                continue;
+            }
+
+            // Calculate the box index.
+            let b = ((y / 3) * 3) + (x / 3);
+
+            // Insert the character to each HashSet.
+            if !rows[y].insert(chr) || 
+                !cols[x].insert(chr) ||
+                !boxs[b].insert(chr) {
+                    // Character previously inserted.
+                    // Invalid Sudoku board.
+                    return false;
+                }
+        }
+    }
+
+    true
+}
+
+fn is_valid_sudoku_c(brd: Vec<Vec<char>>) -> bool {
+    // Time complexity: O(1), a constant number of matrix elements
     // is specified in the challenge 9x9=81.
     // Space complexity: O(1), constant number of supporting variables.
 
