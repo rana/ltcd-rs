@@ -1,5 +1,3 @@
-
-
 /// 383. Ransom Note
 ///
 /// Given two strings ransomNote and magazine, return true if
@@ -11,7 +9,45 @@
 /// Constraints:
 /// * 1 <= ransomNote.length, magazine.length <= 10^5
 /// * ransomNote and magazine consist of lowercase English letters.
+
 fn can_construct(ransom_note: &str, magazine: &str) -> bool {
+    // Count character frequencies in each string.
+    // Compare character frequencies.
+    // Return false if magazine has an individual character
+    // frequency less than the ransom note.
+    // Use an array as a map with a perfect hash.
+    // Time complexity: O(n + m)
+    //  - n is the length of string ransom_note.
+    //  - m is the length of string magazine.
+    // Space complexity: O(1)
+    //  - Constant space due to use of only 26 lowercase
+    //  English letters.
+    const CHR_LEN: usize = 26;
+    const CHR_FST: u8 = b'a';
+
+    // Count character frequency in ransom note.
+    let mut ran_cnts: [u32; CHR_LEN] = [0; CHR_LEN];
+    for &byt_chr in ransom_note.as_bytes() {
+        ran_cnts[(byt_chr - CHR_FST) as usize] += 1;
+    }
+
+    // Count character frequency in magazine.
+    let mut mag_cnts: [u32; CHR_LEN] = [0; CHR_LEN];
+    for &byt_chr in magazine.as_bytes() {
+        mag_cnts[(byt_chr - CHR_FST) as usize] += 1;
+    }
+
+    // Compare character frequencies.
+    for idx in 0..CHR_LEN {
+        if mag_cnts[idx] < ran_cnts[idx] {
+            return false;
+        }
+    }
+
+    true
+}
+
+fn can_construct_c(ransom_note: &str, magazine: &str) -> bool {
     // 26 English letters in alphabet.
     // Can create a perfect hash for map.
     const CHR_LEN: usize = 26;
