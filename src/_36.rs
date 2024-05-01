@@ -25,6 +25,10 @@
 /// * board[i][j] is a digit 1-9 or '.'.
 
 fn is_valid_sudoku(brd: Vec<Vec<char>>) -> bool {
+    // Time complexity: O(1), a constant number of matrix elements 
+    // is specified in the challenge 9x9=81.
+    // Space complexity: O(1), constant number of supporting variables.
+
     // `BRD_LEN` is the width and height of the Sudoku board.
     const BRD_LEN: usize = 9;
     const CHR_SKP: char = '.';
