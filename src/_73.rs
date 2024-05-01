@@ -12,6 +12,70 @@
 /// * -231 <= matrix[i][j] <= 231 - 1
 
 fn set_zeroes(mat: &mut Vec<Vec<i32>>) {
+    // Scan matrix for state.
+    // Store state in first row and first column.
+    // Update matrix zeros based on determined state.
+    // Time complexity: O(m), m is the number of matrix elements.
+    // Space complexity: O(1), supporting variables.
+    let rows = mat.len();
+    let cols = mat[0].len();
+    let mut fst_row_zro = false;
+    let mut fst_col_zro = false;
+
+    // Check whether the first row is zero.
+    for x in 0..cols {
+        if mat[0][x] == 0 {
+            fst_row_zro = true;
+            break;
+        }
+    }
+    // Check whether the first column is zero.
+    for y in 0..rows {
+        if mat[y][0] == 0 {
+            fst_col_zro = true;
+            break;
+        }
+    }
+    // Scan matrix for remaining state.
+    for y in 1..rows {
+        for x in 1..cols {
+            if mat[y][x] == 0 {
+                mat[0][x] = 0;
+                mat[y][0] = 0;
+            }
+        }
+    }
+    // Set matrix zeros for rows.
+    for y in 1..rows {
+        if mat[y][0] == 0 {
+            for x in 1..cols {
+                mat[y][x] = 0;
+            }
+        }
+    }
+    // Set matrix zeros for columns.
+    for x in 1..cols {
+        if mat[0][x] == 0 {
+            for y in 1..rows {
+                mat[y][x] = 0;
+            }
+        }
+    }
+    // Set first row zeros.
+    if fst_row_zro {
+        for x in 0..cols {
+            mat[0][x] = 0;
+        }
+    }
+    // Set first column zeros.
+    if fst_col_zro {
+        for y in 0..rows {
+            mat[y][0] = 0;
+        }
+    }
+}
+
+fn set_zeroes_b(mat: &mut Vec<Vec<i32>>) {
     let rows = mat.len();
     let cols = mat[0].len();
     let mut fst_row_zro = false;
