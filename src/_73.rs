@@ -15,8 +15,8 @@ fn set_zeroes(mat: &mut Vec<Vec<i32>>) {
     // Scan matrix for state.
     // Store state in first row and first column.
     // Update matrix zeros based on determined state.
-    // Time complexity: O(m), m is the number of matrix elements.
-    // Space complexity: O(1), supporting variables.
+    // Time complexity: O(m). m is the number of matrix elements.
+    // Space complexity: O(1). A constant number of supporting variables.
     let rows = mat.len();
     let cols = mat[0].len();
     let mut fst_row_zro = false;
