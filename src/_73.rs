@@ -9,9 +9,76 @@
 /// * m == matrix.length
 /// * n == matrix[0].length
 /// * 1 <= m, n <= 200
-/// * -231 <= matrix[i][j] <= 231 - 1
+/// * -2^31 <= matrix[i][j] <= 2^31 - 1
 
 fn set_zeroes(mat: &mut Vec<Vec<i32>>) {
+    // Evaluate zero state, and update the matrix.
+    // Store matrix zero state in first row and first column.
+    // Time complexity: O(m).
+    //  - m is the number of elements in the matrix.
+    // Space complexity: O(1).
+    //  - A constant number of variables.
+    let rows = mat.len();
+    let cols = mat[0].len();
+    let mut fst_row_zro = false;
+    let mut fst_col_zro = false;
+
+    // Evaluate zero state of first row.
+    for x in 0..cols {
+        if mat[0][x] == 0 {
+            fst_row_zro = true;
+            break;
+        }
+    }
+    // Evaluate zero state of first column.
+    for y in 0..rows {
+        if mat[y][0] == 0 {
+            fst_col_zro = true;
+            break;
+        }
+    }
+    // Evaluate zero state for remaining matrix.
+    for y in 1..rows {
+        for x in 1..cols {
+            if mat[y][x] == 0 {
+                // Store row zero state in first column.
+                mat[y][0] = 0;
+                // Store column zero state in first row.
+                mat[0][x] = 0;
+            }
+        }
+    }
+    // Set main rows to zero.
+    for y in 1..rows {
+        if mat[y][0] == 0 {
+            for x in 1..cols {
+                mat[y][x] = 0;
+            }
+        }
+    }
+    // Set main columns to zero.
+    for x in 1..cols {
+        if mat[0][x] == 0 {
+            for y in 1..rows {
+                mat[y][x] = 0;
+            }
+        }
+    }
+    // Set first row zero.
+    if fst_row_zro {
+        for x in 0..cols {
+            mat[0][x] = 0;
+        }
+    }
+    // Set first column zero.
+    if fst_col_zro {
+        for y in 0..rows {
+            mat[y][0] = 0;
+        }
+    }
+}
+
+fn set_zeroes_c(mat: &mut Vec<Vec<i32>>) {
     // Scan matrix for state.
     // Store state in first row and first column.
     // Update matrix zeros based on determined state.
