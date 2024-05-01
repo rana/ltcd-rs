@@ -17,6 +17,44 @@
 /// * s and t consist of any valid ascii character.
 
 fn is_isomorphic(s: String, t: String) -> bool {
+    // Map each character from s to t.
+    // Map each character from t to s.
+    // Return false if a character has already been mapped.
+    // Use an array as a map and perfect hash.
+    // The perfect hash is to use the character digit as the key.
+    // Time complexity: O(n). n is the length of both string s and t.
+    // Space complexity: O(1). Constant space due to using 128 ASCII characters.
+    const CHR_LEN: usize = 128;
+
+    let mut s_to_t: [Option<u8>; CHR_LEN] = [None; CHR_LEN];
+    let mut t_to_s: [Option<u8>; CHR_LEN] = [None; CHR_LEN];
+
+    for (&s_chr, &t_chr) in s.as_bytes().iter().zip(t.as_bytes()) {
+        if let Some(t_map) = s_to_t[s_chr as usize] {
+            //  Check whether s to t isomorphic constraint is met.
+            if t_map != t_chr {
+                return false;
+            }
+        } else {
+            // Map s character to t character.
+            s_to_t[s_chr as usize] = Some(t_chr);
+        }
+
+        if let Some(s_map) = t_to_s[t_chr as usize] {
+            //  Check whether t to s isomorphic constraint is met.
+            if s_map != s_chr {
+                return false;
+            }
+        } else {
+            // Map s character to t character.
+            t_to_s[t_chr as usize] = Some(s_chr);
+        }
+    }
+
+    true
+}
+
+fn is_isomorphic_b(s: String, t: String) -> bool {
     // Use character digit value as key to array map.
     const CHR_LEN: usize = 128;
 
