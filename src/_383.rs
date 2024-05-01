@@ -11,6 +11,43 @@
 /// * ransomNote and magazine consist of lowercase English letters.
 
 fn can_construct(ransom_note: &str, magazine: &str) -> bool {
+    // Count frequencies of characters in each string.
+    // Use separate maps for counting.
+    // Compare character frequencies from the two strings.
+    // Return false if a magazine character has a lesser count.
+    // Use an array as a map with a perfect hash.
+    // Use the perfect hash of subtracting the character 'a'.
+    // Time complexity: O(n + m).
+    //  - n is the length of string ransom_note.
+    //  - m is the length of string magazine.
+    // Space complexity: O(1).
+    //  - Constant space based on 26 characters in letters.
+    const CHR_LEN: usize = 26;
+    const CHR_FST: u8 = b'a';
+
+    // Count ransom note character frequencies.
+    let mut ran_cnts: [u32; CHR_LEN] = [0; CHR_LEN];
+    for &byt_chr in ransom_note.as_bytes() {
+        ran_cnts[(byt_chr - CHR_FST) as usize] += 1;
+    }
+
+    // Count magazine character frequencies.
+    let mut mag_cnts: [u32; CHR_LEN] = [0; CHR_LEN];
+    for &byt_chr in magazine.as_bytes() {
+        mag_cnts[(byt_chr - CHR_FST) as usize] += 1;
+    }
+
+    // Compare character frequencies.
+    for idx in 0..CHR_LEN {
+        if mag_cnts[idx] < ran_cnts[idx] {
+            return false;
+        }
+    }
+
+    true
+}
+
+fn can_construct_d(ransom_note: &str, magazine: &str) -> bool {
     // Count character frequencies in each string.
     // Compare character frequencies.
     // Return false if magazine has an individual character
