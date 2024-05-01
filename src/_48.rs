@@ -13,6 +13,8 @@
 /// * -1000 <= matrix[i][j] <= 1000
 
 fn rotate(mat: &mut Vec<Vec<i32>>) {
+    // Time complexity: O(m). m is the number of matrix elements.
+    // Space complexity: O(1). A constant number of supporting variables.
     let rows = mat.len();
     let cols = mat[0].len();
 
