@@ -10,6 +10,8 @@
 /// * -100 <= matrix[i][j] <= 100
 
 fn spiral_order(mat: Vec<Vec<i32>>) -> Vec<i32> {
+    // Time complexity: O(m), m is the number of matrix elements.
+    // Space complexity: O(1), constant number of supporting variables.
     let mut ret: Vec<i32> = Vec::with_capacity(mat.len() * mat[0].len());
     let mut lft: usize = 0;
     let mut rht: usize = mat[0].len();
