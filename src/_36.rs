@@ -24,7 +24,44 @@
 /// * board[i].length == 9
 /// * board[i][j] is a digit 1-9 or '.'.
 
-fn is_valid_sudoku(board: Vec<Vec<char>>) -> bool {
+fn is_valid_sudoku(brd: Vec<Vec<char>>) -> bool {
+    // `BRD_LEN` is the width and height of the Sudoku board.
+    const BRD_LEN: usize = 9;
+    const CHR_SKP: char = '.';
+
+    // Create an array of HashSet for each row, column, and box.
+    use std::collections::HashSet;
+    let mut rows = vec![HashSet::<char>::new(); BRD_LEN];
+    let mut cols = vec![HashSet::<char>::new(); BRD_LEN];
+    let mut boxs = vec![HashSet::<char>::new(); BRD_LEN];
+
+    // Loop through each matrix element.
+    for y in 0..BRD_LEN {
+        for x in 0..BRD_LEN {
+            // Get the current character.
+            let chr = brd[y][x];
+            // Check whether to skip the character.
+            if chr == CHR_SKP {
+                continue;
+            }
+
+            // Calculate the box index.
+            let b = ((y / 3) * 3) + (x / 3);
+
+            // Insert the character into a row, column, and box.
+            // Check whether the character was already inserted.
+            if !rows[y].insert(chr) || !cols[x].insert(chr) || !boxs[b].insert(chr) {
+                // If there is a duplicate insertion,
+                // that means the Sudoku board is invalid.
+                return false;
+            }
+        }
+    }
+
+    true
+}
+
+fn is_valid_sudoku_b(board: Vec<Vec<char>>) -> bool {
     use std::collections::HashSet;
 
     let mut cols = vec![HashSet::new(); 9];
