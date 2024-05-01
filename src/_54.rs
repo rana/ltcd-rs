@@ -10,6 +10,55 @@
 /// * -100 <= matrix[i][j] <= 100
 
 fn spiral_order(mat: Vec<Vec<i32>>) -> Vec<i32> {
+    // Traverse the matrix from top, right, bottom, left.
+    // Time complexity: O(m).
+    // - m is the number of elements in the matrix.
+    // Space complexity: O(1).
+    // - A constant number of variables.
+    let rows = mat.len();
+    let cols = mat[0].len();
+    let mut ret = Vec::with_capacity(rows * cols);
+    let mut lft: usize = 0;
+    let mut rht: usize = cols;
+    let mut top: usize = 0;
+    let mut btm: usize = rows;
+
+    // Loop through matrix in clockwise spiral.
+    // top-rht-btm-lft
+    while lft < rht && top < btm {
+        // Traverse current top row.
+        for x in lft..rht {
+            ret.push(mat[top][x]);
+        }
+        top += 1;
+
+        // Traverse current right column.
+        for y in top..btm {
+            ret.push(mat[y][rht - 1]);
+        }
+        rht -= 1;
+
+        // Traverse current bottom row.
+        if top < btm {
+            for x in (lft..rht).rev() {
+                ret.push(mat[btm - 1][x]);
+            }
+            btm -= 1;
+        }
+
+        // Traverse current left column.
+        if lft < rht {
+            for y in (top..btm).rev() {
+                ret.push(mat[y][lft]);
+            }
+            lft += 1;
+        }
+    }
+
+    ret
+}
+
+fn spiral_order_c(mat: Vec<Vec<i32>>) -> Vec<i32> {
     // Time complexity: O(m), m is the number of matrix elements.
     // Space complexity: O(1), constant number of supporting variables.
     let mut ret: Vec<i32> = Vec::with_capacity(mat.len() * mat[0].len());
