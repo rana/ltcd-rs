@@ -13,6 +13,25 @@
 /// * -1000 <= matrix[i][j] <= 1000
 
 fn rotate(mat: &mut Vec<Vec<i32>>) {
+    let rows = mat.len();
+    let cols = mat[0].len();
+
+    // Transpose matrix.
+    for y in 0..rows {
+        for x in y..cols {
+            let tmp = mat[y][x];
+            mat[y][x] = mat[x][y];
+            mat[x][y] = tmp;
+        }
+    }
+
+    // Reverse rows.
+    for y in 0..rows {
+        mat[y].reverse();
+    }
+}
+
+fn rotate_b(mat: &mut Vec<Vec<i32>>) {
     let len = mat.len();
 
     // Rotates matrix to a partial position.
