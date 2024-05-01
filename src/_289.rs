@@ -37,6 +37,61 @@
 /// * board[i][j] is 0 or 1.
 
 fn game_of_life(brd: &mut Vec<Vec<i32>>) {
+    // Calculate live neighbors for each cell.
+    // Apply rules to each cell.
+    // Time complexity: O(m). m is the number of matrix elements.
+    // Space complexity: O(m). m is the number of matrix elements.
+    let rows = brd.len();
+    let cols = brd[0].len();
+    let org = brd.clone();
+
+    // Create a closure to calculate live neighbors.
+    // Use closure to capture rows, cols, org.
+    let cnt_liv_nei = |y: usize, x: usize| -> i32 {
+        // Scan neighboring cells horizontal, vertical, diagonal.
+        let mut cnt: i32 = 0;
+
+        let y_min = y.saturating_sub(1);
+        let y_max = (y + 1).min(rows - 1);
+        for y_cur in y_min..=y_max {
+            let x_min = x.saturating_sub(1);
+            let x_max = (x + 1).min(cols - 1);
+            for x_cur in x_min..=x_max {
+                if (y_cur, x_cur) != (y, x) && org[y_cur][x_cur] == 1 {
+                    cnt += 1;
+                }
+            }
+        }
+
+        cnt
+    };
+
+    // Loop through each matrix element.
+    for y in 0..rows {
+        for x in 0..cols {
+            // Count the live neighbors.
+            let liv_cnt = cnt_liv_nei(y, x);
+
+            if org[y][x] == 1 {
+                // Apply live cell rules.
+                if !(2..=3).contains(&liv_cnt) {
+                    // Set cell to death.
+                    // Apply new state to board.
+                    brd[y][x] = 0;
+                }
+            } else {
+                // Apply dead cell rules.
+                if liv_cnt == 3 {
+                    // Set cell to life.
+                    // Apply new state to board.
+                    brd[y][x] = 1;
+                }
+            }
+        }
+    }
+}
+
+fn game_of_life_b(brd: &mut Vec<Vec<i32>>) {
     let rows = brd.len();
     let cols = brd[0].len();
     let orig = brd.clone();
