@@ -11,6 +11,34 @@
 /// * 0 <= k <= 10^5
 
 fn contains_nearby_duplicate(nums: Vec<i32>, k: i32) -> bool {
+    // Store a number to index mapping in a HashMap.
+    // Loop through each number.
+    // Look for two number which satisfy the success condition.
+    // Time complexity: O(n).
+    //  - n is the length of the nums array.
+    // Space complexity: O(n).
+    //  - n is the length of the nums array.
+    //  - Possible to store up to n-1 elements in the HashMap.
+
+    use std::collections::HashMap;
+
+    let mut map: HashMap<i32, usize> = HashMap::new();
+
+    for (idx_num, num) in nums.iter().enumerate() {
+
+        if let Some(idx_map) = map.get(num) {
+            if idx_num - idx_map <= k as usize {
+                return true;
+            } 
+        }
+
+        map.insert(*num, idx_num);
+    }
+
+    false
+}
+
+fn contains_nearby_duplicate_b(nums: Vec<i32>, k: i32) -> bool {
     use std::collections::HashMap;
 
     // Map number to index.
