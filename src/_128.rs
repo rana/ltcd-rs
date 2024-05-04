@@ -10,6 +10,52 @@
 /// -10^9 <= nums[i] <= 10^9
 
 fn longest_consecutive(nums: Vec<i32>) -> i32 {
+    // Store each number in a HashSet.
+    // Search for sequence starts by n-1 not in the HashSet.
+    // Measure each sequence length.
+    // Store the maximum length of a sequence.
+    // Time complexity: O(n).
+    //  - n is the length of the nums array.
+    //  - Loop through nums twice: once to populate the HashSet,
+    //      once to search for sequences.
+    // Space complexity: O(n).
+    //  - n is the length of the nums array.
+    //  - Store each number in a HashSet.
+
+    use std::collections::HashSet;
+
+    // Create a HashSet with each number.
+    // Contributes to O(n) space complexity.
+    // Contributes to O(n) time complexity.
+    let set: HashSet<i32> = nums.iter().cloned().collect();
+
+    let mut max_len: i32 = 0;
+
+    // Loop through each number.
+    // Contributes to O(n) time complexity.
+    for &num in &set {
+        // Search for sequence start.
+        // Start of a sequence is when n-1 isn't in the set.
+        if !set.contains(&(num - 1)) {
+            // Found the start of a possible sequence.
+            let mut cur_len: i32 = 1;
+            let mut cur_num: i32 = num;
+
+            // Measure the length of the sequence.
+            while set.contains(&(cur_num + 1)) {
+                cur_num += 1;
+                cur_len += 1;
+            }
+
+            // Store the maximum sequence length.
+            max_len = max_len.max(cur_len);
+        }
+    }
+
+    max_len
+}
+
+fn longest_consecutive_b(nums: Vec<i32>) -> i32 {
     use std::collections::HashSet;
 
     // Create a set of all elements in `nums`.
