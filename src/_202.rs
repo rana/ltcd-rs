@@ -19,6 +19,42 @@
 /// * 1 <= n <= 2^31 - 1
 
 fn is_happy(n: i32) -> bool {
+    // Create a function which transforms n.
+    // Create a fast path and slow path to detect a cycle.
+    // Apply the function to both the fast path and slow path.
+    // Time complexity: O(logn).
+    // Space complexity: O(1).
+    //  - A constant number of supporting variables.
+
+    // `nxt_num` transforms n to the next number.
+    fn nxt_num(mut n: i32) -> i32 {
+        let mut sum: i32 = 0;
+        while n > 0 {
+            let dig = n % 10;
+            sum += dig * dig;
+            n /= 10;
+        }
+        sum
+    }
+
+    // Search for a solution, or infinite cycle.
+    let mut slow = n;
+    let mut fast = n;
+    loop {
+        slow = nxt_num(slow);
+        fast = nxt_num(nxt_num(fast));
+        // Check if we found a solution.
+        if fast == 1 {
+            return true;
+        }
+        // Check if we found an infinite cycle.
+        if slow == fast {
+            return false;
+        }
+    }
+}
+
+fn is_happy_b(n: i32) -> bool {
     // Calculate the next number with the given rules.
     fn nxt_num(mut n: i32) -> i32 {
         let mut sum: i32 = 0;
