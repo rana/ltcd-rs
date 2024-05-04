@@ -10,12 +10,42 @@
 /// You can return the answer in any order.
 ///
 /// Constraints:
-/// * 2 <= nums.length <= 104
+/// * 2 <= nums.length <= 10^4
 /// * -10^9 <= nums[i] <= 10^9
 /// * -10^9 <= target <= 10^9
 /// * Only one valid answer exists.
 
 fn two_sum(nums: Vec<i32>, tgt: i32) -> Vec<i32> {
+    // Map a number to and index with a HashMap.
+    // Time complexity: O(n).
+    //  - n is the length of the nums array.
+    // Space complexity: O(n).
+    //  - n is the length of the nums array.
+    //  - Up to n-1 numbers are inserted into the HashMap.
+    use std::collections::HashMap;
+
+    // Contributes to O(n) space complexity.
+    let mut map: HashMap<i32, usize> = HashMap::new();
+
+    // Loop through each element of array nums.
+    // Contributes to O(n) time complexity.
+    for (idx_num, num) in nums.into_iter().enumerate() {
+        // Calculate the complement of the current number.
+        let complement = tgt - num;
+        // Search for the complement in the HashMap.
+        if let Some(&idx_map) = map.get(&complement) {
+            // Found solution.
+            return vec![idx_map as i32, idx_num as i32];
+        }
+
+        // Store current number to index mapping.
+        map.insert(num, idx_num);
+    }
+
+    vec![]
+}
+
+fn two_sum_b(nums: Vec<i32>, tgt: i32) -> Vec<i32> {
     use std::collections::HashMap;
 
     // Map each number to it's index.
