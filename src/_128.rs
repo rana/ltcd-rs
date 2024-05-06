@@ -10,6 +10,49 @@
 /// -10^9 <= nums[i] <= 10^9
 
 fn longest_consecutive(nums: Vec<i32>) -> i32 {
+    // Use a HashSet to search for sequences.
+    // Store each element in a HashSet.
+    // Loop through each element.
+    // Look for the start of a sequence.
+    // The start of a sequence is num-1.
+    // Measure the length of the current sequence.
+    // Store the length of the largest sequence.
+    // Time complexity: O(n).
+    //  - n is the length of the nums array.
+    //  - Stores each element in a HashSet.
+    //  - Looks through each element for the start of a sequence.
+    // Space complexity: O(n).
+    //  - n is the length of the nums array.
+    //  - Stores each element in a HashSet.
+    let mut max_len: i32 = 0;
+
+    // Contributes O(n) space complexity.
+    // Contributes O(n) time complexity.
+    use std::collections::HashSet;
+    let set: HashSet<i32> = nums.iter().cloned().collect();
+
+    // Loop through each number.
+    // Contributes O(n) time complexity.
+    for num in nums {
+        // Look for the start of a sequence.
+        if !set.contains(&(num - 1)) {
+            // Measure the length of the sequence.
+            let mut cur_num = num;
+            let mut cur_len = 1;
+            while set.contains(&(cur_num + 1)) {
+                cur_num += 1;
+                cur_len += 1;
+            }
+
+            // Store the maximum sequence length.
+            max_len = max_len.max(cur_len);
+        }
+    }
+
+    max_len
+}
+
+fn longest_consecutive_d(nums: Vec<i32>) -> i32 {
     // Store all elements in a HashSet.
     // Loop through all elements.
     // Search for the start of a sequence.
