@@ -1,3 +1,5 @@
+use std::collections;
+
 /// 290. Word Pattern
 ///
 /// Given a pattern and a string s, find if s
@@ -16,6 +18,56 @@
 /// * All the words in s are separated by a single space.
 
 fn word_pattern(pattern: &str, s: &str) -> bool {
+    // Create a one-to-one mapping between chars and words.
+    // Use two HashMaps.
+    // Time complexity: O(m + n).
+    //  - m is the length of string pattern.
+    //  - n is the length of string s.
+    // Space complexity: O(w).
+    //  - w is the number of words in string s.
+    //  - The space complexity of the character in pattern
+    //  are constant due to the use of 26 letters.
+    use std::collections::HashMap;
+
+    // Contributes O(1) to space complexity.
+    let mut chr_to_wrd: HashMap<char, &str> = HashMap::new();
+    // Contributes O(w) to space complexity.
+    let mut wrd_to_chr: HashMap<&str, char> = HashMap::new();
+
+    // Split string s into an array of words.
+    let wrds: Vec<&str> = s.split_whitespace().collect();
+
+    // Check for a non-equal edge condition.
+    if pattern.len() != wrds.len() {
+        return false;
+    }
+
+    // Loop through each character and words simultaneously.
+    // Contributes O(m + n) time complexity.
+    for (chr, wrd) in pattern.chars().zip(wrds) {
+        // Check chr-wrd mapping valid; or, insert.
+        if let Some(&wrd_map) = chr_to_wrd.get(&chr) {
+            if wrd != wrd_map {
+                return false;
+            }
+        } else {
+            chr_to_wrd.insert(chr, wrd);
+        }
+
+        // Check wrd-chr mapping valid; or, insert.
+        if let Some(&chr_map) = wrd_to_chr.get(wrd) {
+            if chr != chr_map {
+                return false;
+            }
+        } else {
+            wrd_to_chr.insert(wrd, chr);
+        }
+    }
+
+    true
+}
+
+fn word_pattern_d(pattern: &str, s: &str) -> bool {
     // Use two HashMaps to establish a symmetric
     // one-to-one mapping.
     // One HashMap is chr_to_wrd.
