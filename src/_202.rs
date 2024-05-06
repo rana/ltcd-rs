@@ -19,6 +19,46 @@
 /// * 1 <= n <= 2^31 - 1
 
 fn is_happy(n: i32) -> bool {
+    // Create a function which returns the next number.
+    // Call the function with Floyd's cycle detection.
+    // Call the function with a slow path.
+    // Call the function with a fast path.
+    // Return true if fast path is the happy number.
+    // Return false if the slow path equals the fast path.
+    // Time complexity: O(logn).
+    // Space complexity: O(1).
+    //  - A constant number of supporting variables.
+
+    // nxt_num applies specified rules.
+    fn nxt_num(mut n: i32) -> i32 {
+        let mut sum: i32 = 0;
+        while n > 0 {
+            let dig = n % 10;
+            sum += dig * dig;
+            n /= 10;
+        }
+        sum
+    }
+
+    // Determine an outcome with Floyd's cycle detection.
+    let mut slow = n;
+    let mut fast = n;
+    loop {
+        // Apply Floyd's cycle detection.
+        slow = nxt_num(slow);
+        fast = nxt_num(nxt_num(fast));
+        // Check success condition.
+        if fast == 1 {
+            return true;
+        }
+        // Check fail condition.
+        if slow == fast {
+            return false;
+        }
+    }
+}
+
+fn is_happy_c(n: i32) -> bool {
     // Create a function which transforms n.
     // Create a fast path and slow path to detect a cycle.
     // Apply the function to both the fast path and slow path.
