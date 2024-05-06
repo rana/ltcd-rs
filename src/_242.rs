@@ -11,7 +11,46 @@
 /// * 1 <= s.length, t.length <= 5 * 10^4
 /// * s and t consist of lowercase English letters.
 
+
 fn is_anagram(s: String, t: String) -> bool {
+    // Count character frequencies of each string.
+    // Compare character frequencies for equality.
+    // Return false for non-equal character frequency.
+    // Use an array map and perfect hash.
+    // Increment count for first string.
+    // Decrement count for second string.
+    // Time complexity: O(n).
+    //  - n is the length of both strings s and t.
+    // Space complexity: O(1).
+    //  - A constant 26 letters used in HashMap keys.
+    const CHR_LEN: usize = 26;
+    const CHR_FST: u8 = b'a';
+
+    // Contributes to O(1) space complexity.
+    let mut chr_cnts: [i32; CHR_LEN] = [0; CHR_LEN];
+
+    // Increment character frequencies for string s.
+    // Contributes to O(n) time complexity. 
+    for &byt_chr in s.as_bytes() {
+        let idx = (byt_chr - CHR_FST) as usize;
+        chr_cnts[idx] += 1;
+    }
+
+    // Decrement character frequencies for string t.
+    // Contributes to O(n) time complexity. 
+    for &byt_chr in t.as_bytes() {
+        let idx = (byt_chr - CHR_FST) as usize;
+        chr_cnts[idx] -= 1;
+        // Check for invalid anagram condition.
+        if chr_cnts[idx] < 0 {
+            return false;
+        }
+    }
+
+    true
+}
+
+fn is_anagram_c(s: String, t: String) -> bool {
     // Check if lengths are the same.
     // Check if character frequencies are equal.
     // Use a perfect hash by subtracting b'a'.
