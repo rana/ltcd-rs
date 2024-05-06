@@ -9,7 +9,7 @@
 /// * 0 <= nums.length <= 10^5
 /// -10^9 <= nums[i] <= 10^9
 
-fn longest_consecutive_d(nums: Vec<i32>) -> i32 {
+fn longest_consecutive(nums: Vec<i32>) -> i32 {
     // Store all elements in a HashSet.
     // Loop through all elements.
     // Search for the start of a sequence.
