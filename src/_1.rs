@@ -16,6 +16,41 @@
 /// * Only one valid answer exists.
 
 fn two_sum(nums: Vec<i32>, tgt: i32) -> Vec<i32> {
+    // Map each number to an index.
+    // Loop through each element in nums.
+    // Calculate the complement relative to target.
+    // If complement was stored in HashMap,
+    // return the stored index and the current index as solution.
+    // If no complement, insert the current number to index mapping.
+    // Time complexity: O(n).
+    //  - n is the length of the nums array.
+    //  - Looks at each element of the nums array.
+    // Space complexity: O(n).
+    //  - n is the length of the nums array.
+    //  - Stores each element of the nums array.
+    use std::collections::HashMap;
+
+    // Contributes O(n) space complexity.
+    let mut map: HashMap<i32, usize> = HashMap::new();
+
+    // Loop through each element of the nums array.
+    // Contributes O(n) time complexity.
+    for (idx_num, num) in nums.into_iter().enumerate() {
+        // Calculate complement.
+        let cmp = tgt - num;
+        // Check whether complement was seen.
+        if let Some(&idx_cmp) = map.get(&cmp) {
+            // Found solution.
+            return vec![idx_cmp as i32, idx_num as i32];
+        }
+        // Insert new number to index mapping.
+        map.insert(num, idx_num);
+    }
+
+    vec![]
+}
+
+fn two_sum_d(nums: Vec<i32>, tgt: i32) -> Vec<i32> {
     // Create a HashMap of num-to-index.
     // Time complexity: O(n).
     //  - n is the length of the nums array.
