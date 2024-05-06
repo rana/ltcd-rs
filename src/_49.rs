@@ -13,6 +13,37 @@
 /// * strs[i] consists of lowercase English letters.
 
 fn group_anagrams(strs: Vec<&str>) -> Vec<Vec<String>> {
+    // Use a HashMap.
+    // Use the sorted word as a key.
+    // The value is a list.
+    // Insert the word to the list.
+    // Time complexity: O(m * nlogn).
+    //  - m is the length of the strs array.
+    //  - nlogn is the time to sort each element in the strs array.
+    // Space complexity: O(m * n).
+    //  - m is the length of the strs array.
+    //  - n is the average length of an element in the strs array.
+    use std::collections::HashMap;
+
+    // Contributes O(m * n) space complexity.
+    let mut map: HashMap<String, Vec<String>> = HashMap::new();
+
+    // Loop through each element in strs.
+    // Contributes O(m) portion of O(m * nlogn) time complexity.
+    for wrd in strs {
+        // Sort word for HashMap key use.
+        let mut wrd_vec: Vec<char> = wrd.chars().collect();
+        wrd_vec.sort_unstable();
+        let wrd_srt: String = wrd_vec.iter().collect();
+
+        // Insert wrd_srt-wrd.
+        map.entry(wrd_srt).or_default().push(wrd.to_string());
+    }
+
+    map.into_values().collect()
+}
+
+fn group_anagrams_c(strs: Vec<&str>) -> Vec<Vec<String>> {
     // Insert each word into a HashMap with a sorted word key.
     // Sort the characters of each word.
     // Use the sorted word as a key.
