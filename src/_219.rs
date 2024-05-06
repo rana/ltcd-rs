@@ -11,6 +11,38 @@
 /// * 0 <= k <= 10^5
 
 fn contains_nearby_duplicate(nums: Vec<i32>, k: i32) -> bool {
+    // Use a HashMap to store number-to-index mappings.
+    // Check success condition when both numbers found.
+    // Time complexity: O(n).
+    //  - n is the length of the nums array.
+    //  - Look at each element once.
+    // Space complexity: O(n).
+    //  - n is the length of the nums array.
+    //  - Store each element of the nums array.
+    use std::collections::HashMap;
+
+    // Contributes O(n) space complexity.
+    let mut map: HashMap<i32, usize> = HashMap::new();
+
+    // Loop through each element of the nums array.
+    // Contributes O(n) time complexity.
+    for (idx_num, num) in nums.into_iter().enumerate() {
+        // Check for previous number stored.
+        if let Some(&idx_map) = map.get(&num) {
+            // Check for success condition.
+            // idx_map always smaller than idx_num.
+            if idx_num - idx_map <= k as usize {
+                return true;
+            }
+        }
+
+        map.insert(num, idx_num);
+    }
+
+    false
+}
+
+fn contains_nearby_duplicate_c(nums: Vec<i32>, k: i32) -> bool {
     // Store a number to index mapping in a HashMap.
     // Loop through each number.
     // Look for two number which satisfy the success condition.
@@ -25,11 +57,10 @@ fn contains_nearby_duplicate(nums: Vec<i32>, k: i32) -> bool {
     let mut map: HashMap<i32, usize> = HashMap::new();
 
     for (idx_num, num) in nums.iter().enumerate() {
-
         if let Some(idx_map) = map.get(num) {
             if idx_num - idx_map <= k as usize {
                 return true;
-            } 
+            }
         }
 
         map.insert(*num, idx_num);
