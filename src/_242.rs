@@ -11,8 +11,47 @@
 /// * 1 <= s.length, t.length <= 5 * 10^4
 /// * s and t consist of lowercase English letters.
 
-
 fn is_anagram(s: String, t: String) -> bool {
+    // Count character frequencies from each string.
+    // Increment character frequencies from string s.
+    // Decrement character frequencies from string t.
+    // Compare character frequencies for equality.
+    // Use an array map and perfect hash due to small key space.
+    // Time complexity: O(n).
+    //  - n is the length of both strings s and string t.
+    // Space complexity: O(1).
+    //  - A constant 26 characters are used in HashMap keys.
+    const CHR_LEN: usize = 26;
+    const CHR_FST: u8 = b'a';
+
+    // Check non-equal length edge condition.
+    if s.len() != t.len() {
+        return false;
+    }
+
+    // Contributes O(1) space complexity.
+    let mut chr_cnts: [i32; CHR_LEN] = [0; CHR_LEN];
+
+    // Increment character frequencies from string s.
+    for &byt_chr in s.as_bytes() {
+        let idx = (byt_chr - CHR_FST) as usize;
+        chr_cnts[idx] += 1;
+    }
+
+    // Decrement character frequencies from string t.
+    for &byt_chr in t.as_bytes() {
+        let idx = (byt_chr - CHR_FST) as usize;
+        chr_cnts[idx] -= 1;
+        // Check for non-equality exit condition.
+        if chr_cnts[idx] < 0 {
+            return false;
+        }
+    }
+
+    true
+}
+
+fn is_anagram_d(s: String, t: String) -> bool {
     // Count character frequencies of each string.
     // Compare character frequencies for equality.
     // Return false for non-equal character frequency.
@@ -30,14 +69,14 @@ fn is_anagram(s: String, t: String) -> bool {
     let mut chr_cnts: [i32; CHR_LEN] = [0; CHR_LEN];
 
     // Increment character frequencies for string s.
-    // Contributes to O(n) time complexity. 
+    // Contributes to O(n) time complexity.
     for &byt_chr in s.as_bytes() {
         let idx = (byt_chr - CHR_FST) as usize;
         chr_cnts[idx] += 1;
     }
 
     // Decrement character frequencies for string t.
-    // Contributes to O(n) time complexity. 
+    // Contributes to O(n) time complexity.
     for &byt_chr in t.as_bytes() {
         let idx = (byt_chr - CHR_FST) as usize;
         chr_cnts[idx] -= 1;
