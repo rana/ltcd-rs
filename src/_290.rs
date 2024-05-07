@@ -1,5 +1,3 @@
-use std::collections;
-
 /// 290. Word Pattern
 ///
 /// Given a pattern and a string s, find if s
