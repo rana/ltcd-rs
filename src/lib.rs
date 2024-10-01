@@ -1,5 +1,7 @@
 #![allow(dead_code)]
+#![allow(clippy::unnecessary_vec)]
 
+mod _88;
 // mod _12;
 // mod _121;
 // mod _122;
@@ -20,7 +22,6 @@
 // mod _58;
 // mod _76;
 // mod _80;
-// mod _88;
 // mod _151;
 // mod _6;
 // mod _28;

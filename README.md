@@ -2,25 +2,13 @@
 
 LeetCode solutions in Rust.
 
+# Spreadsheet
 
-## Usage
+[Progress Tracking](https://docs.google.com/spreadsheets/d/18OZ1SwBK0OG4Wl3-_FqsO487ZhylPrbwA9HGuq3OHYs/edit?usp=sharing)
 
-Run individual test metrics at the terminal.
-```sh
-clear && cargo test --test <test-name>
-```
-Or, with the VSCode IDE.
+# AI Prompts
 
-* Compiler optimizations for tests are configured in `Cargo.toml`.
-```toml
-[profile.test]
-opt-level = 3
-```
-  
-# Notes
+Solve with Rust.
 
-Use nightly build to support metrics from the [ben](https://github.com/rana/ben) library.
-
-```sh
-rustup default nightly
-```
+Create unit test module.
+Create test common and edge test cases.
