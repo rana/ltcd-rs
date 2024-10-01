@@ -5,14 +5,14 @@ pub fn remove_duplicates(nums: &mut [i32]) -> i32 {
     // Use a two-pointer technique.
 
     // Move unique elements to the left.
-    // Remove duplicate elements from the front of nums.
+    // Remove duplicate elements from the front of nums array.
     // The array is sorted.
 
     // `MAX_DUP` is the maximum number of duplicates.
     // `MAX_DUP = 1` means no duplicates.
     const MAX_DUP: usize = 1;
 
-    // Check for a `nums` minum edge condition.
+    // Check for a `nums` minimum edge condition.
     if nums.len() <= MAX_DUP {
         return nums.len() as i32;
     }
