@@ -3,10 +3,15 @@
 mod _88;
 mod _88e;
 mod _27;
+mod _27e;
 mod _26;
+mod _26e;
 mod _80;
+mod _80e;
 mod _169;
+mod _169e;
 mod _189;
+mod _189e;
 // mod _12;
 // mod _121;
 // mod _122;
