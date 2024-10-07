@@ -19,9 +19,11 @@ Rust language specifics:
 
 Unit tests. Write a unit test module. In your response, display the test module code separately from any example solution code block. Write each test case in a test function. Write test function for valid cases. Write a test function for invalid cases. The name of a test function is not suffixed with "cases". 
 
-Analysis approach. Prefer a chain-of-thought approach which emphasizes correctness. Prefer making time to reflect, contemplate, and analyze. Maximize your time for analysis. Determine if your solution is this the most appropriate solution versus one or more  approaches.
+Analysis approach. Prefer a chain-of-thought approach which emphasizes correctness. Prefer making time to reflect, contemplate, and analyze. Maximize your time for analysis. Determine if your solution is the most appropriate solution versus one or more  approaches.
 
-Algorithm analysis. Evaluate the algorithm's time complexity and space complexity. Characterize the techniques used in the algorithm.
+Algorithm analysis. Evaluate the algorithm's time complexity and space complexity. Characterize and name the algorithm(s) and technique(s) used.
 
 When using the two-pointer technique, name the variables `lft` for the left, slow pointer, and `rht` for the right, fast pointer.
+
+LeetCode Challenges. Use the challenge title and number for the Chat title.
 ```
