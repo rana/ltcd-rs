@@ -1,4 +1,3 @@
-use core::num;
 
 // Time complexity: O(n), n is the length of string s.
 // Space complexity: O(n), n is the number of chars stored in rows array.
