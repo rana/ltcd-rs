@@ -1,60 +1,64 @@
-// Time complexity: O(n^2), n is the length of the nums array. Nums is traversed twice.
-// Space complexity: O(n), the average case of triplets dependent on input
-// https://chatgpt.com/c/6705c47b-79c4-8002-af71-9e73c411f45a
 pub fn three_sum(mut nums: Vec<i32>) -> Vec<Vec<i32>> {
+    // 3Sum
+    // Given an integer array of nums.
+    // Duplicate integers may exist.
+    // Array is unsorted.
+    // Determine all sums equal to zero.
+    // Return an array of index triplet solutions.
+    // Use a two-pointer approach.
+
     use std::cmp::Ordering;
 
-    // Given an integer array nums.
-    // Notice nums is not sorted.
-    // Notice duplicates may exist.
-    // Return all triplets which sum to zero.
-    // Triplet indexes are to be different.
-    // Sort and use a two-pointer technique.
-
-    // Sort to enable two-pointer approach.
+    // Sort nums array in ascending order.
+    // Used to skip duplicates.
+    // Time complexity: O(nlogn)
     nums.sort_unstable();
 
     // Initialize variables.
-    let mut res = Vec::new();
+    let mut res: Vec<Vec<i32>> = Vec::new();
 
-    for n in 0..nums.len() {
-        // Skip duplicates for the first number.
-        if n > 0 && nums[n] == nums[n - 1] {
+    // Loop through each number.
+    // Pins first triplet.
+    for idx in 0..nums.len() {
+        // Progress through any duplicates.
+        if idx > 0 && nums[idx] == nums[idx - 1] {
             continue;
         }
 
-        // Initialize two-pointer variables.
-        let mut lft = n + 1;
-        let mut rht = nums.len() - 1;
+        // Initialize two pointers.
+        let mut lft: usize = idx + 1;
+        let mut rht: usize = nums.len() - 1;
 
-        // Loop until the two pointers meet.
+        // Loop until two pointers meet.
         while lft < rht {
-            // Calculate the current triplet sum.
-            let cur_sum = nums[n] + nums[lft] + nums[rht];
+            // Calculate sum of triplets.
+            let sum = nums[idx] + nums[lft] + nums[rht];
 
-            // Evaluate current sum.
-            match cur_sum.cmp(&0) {
-                // Current sum matches target value of zero.
+            // Compare sum to target.
+            const TARGET: i32 = 0;
+            match sum.cmp(&TARGET) {
+                // Success condition found.
                 Ordering::Equal => {
-                    // Store the matching triplet.
-                    res.push(vec![nums[n], nums[lft], nums[rht]]);
+                    // Store triplet.
+                    res.push(vec![nums[idx], nums[lft], nums[rht]]);
 
-                    // Progress lft pointer to last duplicate.
+                    // Progress lft to last duplicate.
                     while lft < rht && nums[lft] == nums[lft + 1] {
                         lft += 1;
                     }
-                    // Progress rht pointer to last duplicate.
+
+                    // Progress rht to last duplicate.
                     while lft < rht && nums[rht] == nums[rht - 1] {
                         rht -= 1;
                     }
 
-                    // Progress two pointers to next unique.
+                    // Progress two pointers.
                     lft += 1;
                     rht -= 1;
                 }
-                // Make the next sum larger.
+                // Make next sum larger.
                 Ordering::Less => lft += 1,
-                // Make the nex sum smaller.
+                // Make next sum smaller.
                 Ordering::Greater => rht -= 1,
             }
         }

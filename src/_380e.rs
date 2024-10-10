@@ -1,6 +1,5 @@
-use std::{collections::HashMap, os::unix::thread};
-
 use rand::{thread_rng, Rng};
+use std::collections::HashMap;
 
 struct RandomizedSet {
     list: Vec<i32>,
