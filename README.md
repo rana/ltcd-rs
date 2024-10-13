@@ -18,11 +18,13 @@ Rust language:
 * Use Option<T> where appropriate to avoid sentinel values.
 * Explicitly annotate variable type for readability. Example: `let mut max_len: i32 = 0`
 * Prefer for index variable identifier `idx` or `n`.
-* For integers used as a slice index, cast a `non-usize` variable to a usize. For example, if `len` variable is type `isize`, then `nums[..len as usize]`.
+* For integers used as an array index, cast a `non-usize` variable to a usize. For example, `let mut idx: isize = 0`, then `nums[..idx as usize]`.
 
-Identifier naming. Use three letter acronyms when possible. Prefer consonants; Drop vowels. Examples: `current_length = cur_len`, `right = rht`, `left = lft`, `previous = prv`, `next = nxt`, `word = wrd`, `count = cnt`, `index = idx`. 
+Identifier naming. Use three letter acronyms when possible. Prefer consonants; Drop vowels. Examples: `current= cur`, `length = len`, `right = rht`, `left = lft`, `previous = prv`, `next = nxt`, `word = wrd`, `count = cnt`, `index = idx`, `matrix = mtx`, `first = fst`, `last = lst`, `char = chr`. Prefer: `old` -> `prv`, `new` -> `nxt`, `result = res`, `response = res`, `request = req`, `merge = mrg`. 
 
 Unit tests. Write a unit test module. Display test module code separately from any solution code block. Write each test case in a test function. Write test functions for valid cases. Write test functions for invalid cases. Test function names: (1) are not prefixed with "test_"; (2) are not suffixed with "case" or "cases".
+* Test functions are annotated with `#[test]`.
+* Use macro `assert!` if the function under test return a bool. `assert_eq!(f1(val), true)` -> `assert!(f1(val))`
 
 Analysis approach. Prefer a chain-of-thought approach which emphasizes correctness. Prefer making time to reflect, contemplate, and analyze. Maximize your time for analysis. Determine if your solution is the most appropriate solution. Compare with one or more other approaches. Consider library functions as a valid, simple approach.
 
@@ -34,7 +36,7 @@ LeetCode Challenges:
 * Place import statements within a function when possible.
 * Make function variables mutable as needed: `f1(nums: Vec<i32>) -> f1(mut nums: Vec<i32>) `
 * Rename function variables with three letter acronyms for readability: `f1(words: Vec<String>) -> f1(wrds: Vec<String>)`
-* Evaluate challenge constraints when constructing unit tests.
+* Evaluate challenge constraints when constructing unit tests. Skip unit tests beyond defined constraints.
 ```
 
 ---
