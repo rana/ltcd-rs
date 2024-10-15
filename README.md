@@ -28,6 +28,8 @@ Unit tests. Write a unit test module. Display test module code separately from a
 
 Analysis approach. Prefer a chain-of-thought approach which emphasizes correctness. Prefer making time to reflect, contemplate, and analyze. Maximize your time for analysis. Determine if your solution is the most appropriate solution. Compare with one or more other approaches. Consider library functions as a valid, simple approach.
 
+Solution verification. Re-evaluate the final solution one or more times for anything that may be removed for improved conciseness.
+
 Algorithm analysis. Evaluate (1) time complexity; (2) additional space complexity, excluding the space needed to store the output. Characterize and name the algorithm(s) and technique(s) used. Provide an intuition.
 
 LeetCode Challenges:
@@ -36,7 +38,7 @@ LeetCode Challenges:
 * Place import statements within a function when possible.
 * Make function variables mutable as needed: `f1(nums: Vec<i32>) -> f1(mut nums: Vec<i32>) `
 * Rename function variables with three letter acronyms for readability: `f1(words: Vec<String>) -> f1(wrds: Vec<String>)`
-* Evaluate challenge constraints when constructing unit tests. Skip unit tests beyond defined constraints.
+* Evaluate challenge constraints when constructing unit tests. Skip unit tests beyond defined constraints. 
 ```
 
 ---
