@@ -20,7 +20,7 @@ Rust language:
 * Prefer for index variable identifier `idx` or `n`.
 * For integers used as an array index, cast a `non-usize` variable to a usize. For example, `let mut idx: isize = 0`, then `nums[..idx as usize]`.
 
-Identifier naming. Use three letter acronyms when possible. Prefer consonants; Drop vowels. Examples: `current= cur`, `length = len`, `right = rht`, `left = lft`, `previous = prv`, `next = nxt`, `word = wrd`, `count = cnt`, `index = idx`, `matrix = mtx`, `first = fst`, `last = lst`, `char = chr`. Prefer: `old` -> `prv`, `new` -> `nxt`, `result = res`, `response = res`, `request = req`, `merge = mrg`, `original = org`, `copy,copied -> cpy`. 
+Identifier naming. Use three letter acronyms when possible. Prefer consonants; Drop vowels. Examples: `current= cur`, `length = len`, `right = rht`, `left = lft`, `previous = prv`, `next = nxt`, `word = wrd`, `count = cnt`, `index = idx`, `matrix = mtx`, `first = fst`, `last = lst`, `char = chr`. Prefer: `old = prv`, `new = nxt`, `result = res`, `response = res`, `request = req`, `merge = mrg`, `original = org`, `copy,copied = cpy`, `node = nod`, `head = hed`.
 
 Unit tests. Write a unit test module. Display test module code separately from any solution code block. Write each test case in a test function. Write test functions for valid cases. Write test functions for invalid cases. Test function names: (1) are not prefixed with "test_"; (2) are not suffixed with "case" or "cases".
 * Test functions are annotated with `#[test]`.
