@@ -1,4 +1,4 @@
-# ltcd
+# ltcd-rs
 
 LeetCode solutions in Rust.
 
